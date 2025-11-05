@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="../scram/scramjet.all.js"></script>
+    <script src="../assets/js/mainAnimation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+  </head>
+  <body>
+    <input id="rogoisdabest" placeholder="search" class="search" />
+    <iframe id="frame" class="w-full h-screen border-0"></iframe>
+    <script type="module">
+      // --- LITHIUM IMPORTS ---
+      import {
+        setTransport,
+        setWisp,
+        makeURL,
+        getProxied,
+      } from "../lithium.mjs";
+
+      let protocol;
+      if (location.protocol === "https:") {
+        protocol = "wss://";
+      } else {
+        protocol = "ws://";
+      }
+      const host = location.host;
+      setWisp(`${protocol}${host}/wisp/`);
+      setTransport("epoxy");
+
+      const input = document.getElementById("rogoisdabest");
+      input.addEventListener("keyup", async (e) => {
+        if (e.key === "Enter" || e.keyCode === 13) {
+          const url = await getProxied(makeURL(input.value));
+          document.getElementById("frame").src = url;
+          console.log("Loading URL:", url);
+        }
+      });
+    </script>
+  </body>
+</html>

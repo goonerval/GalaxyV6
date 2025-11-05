@@ -261,12 +261,44 @@ function part2() {
     }
   );
 }
+function finish() {
+  const finish = document.getElementById("finish");
+  finish.style.display = "flex";
+  gsap.fromTo(
+    ".stagger3",
+    {
+      opacity: 0,
+      y: 50,
+    },
+    {
+      y: 0,
+      opacity: 1,
+      duration: 0.4,
+      ease: "power1.out",
+      stagger: 0.1,
+    }
+  );
+}
 function ghost2() {
-  gsap.to(".stagger2", {
-    y: -20,
-    opacity: 0,
-    duration: 0.4,
-  });
+  gsap.fromTo(
+    ".stagger2",
+    {
+      opacity: 1,
+      y: 0,
+    },
+    {
+      y: -50,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power1.out",
+      stagger: 0.1,
+      onComplete: function () {
+        const message = document.getElementById("chooseBg");
+        message.style.display = "none";
+        finish();
+      },
+    }
+  );
 }
 
 let backgroundURL = localStorage.getItem("backgroundURL");
@@ -288,4 +320,18 @@ function setBackground(bg) {
     "--backgroundURL",
     `url(${backgroundURL})`
   );
+}
+let img = document.querySelectorAll(".bgimg");
+
+img.forEach((el) => {
+  el.addEventListener("mouseenter", () => {
+    img.forEach((e) => (e.style.opacity = "0.4"));
+  });
+
+  el.addEventListener("mouseleave", () => {
+    img.forEach((e) => (e.style.opacity = "1"));
+  });
+});
+function ghost3() {
+  window.location.href = "main.html";
 }

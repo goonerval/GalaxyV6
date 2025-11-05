@@ -132,8 +132,8 @@ body {
   display: flex;
   flex-direction: column;
 }
-.chooseBg,
-.enterName {
+
+.enterName, .chooseBg, .finish {
   display: none;
   opacity: 0;
 }
@@ -141,16 +141,43 @@ body {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  width: 1000px;
 }
 .bgimg {
   flex-grow: 1;
-  height: 170px;
+  height: 150px;
   border: 2px solid rgb(153, 153, 153);
   border-radius: 10px;
   cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+.continueButton {
+  height: 40px;
+  width: 120px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 7px;
+  margin-top: 16px;
+  transition-duration: 0.2s;
+  background-color: #6462627a;
+  border: 1px solid #98989829;
+  color: white;
+  font-family: gravity;
+}
+.continueButton:hover {
+  background-color: #3636367a;
+}
+.finish {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-#frame {
-  height: 100vh;
-  width: 100vw;
-}
+
+/*--------------------------------*/
+/*--------------------------------*/
+/*--------------------------------*/
+/* MAIN OS STYLES */
+/*--------------------------------*/
+/*--------------------------------*/
+/*--------------------------------*/
