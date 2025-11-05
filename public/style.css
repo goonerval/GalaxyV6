@@ -1,11 +1,15 @@
+:root {
+  --backgroundURL: url("assets/img/black.jpg");
+}
 body {
+  background-image: var(--backgroundURL);
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-image: url("assets/img/bg3.png");
   background-size: cover;
   background-repeat: no-repeat;
   color: rgb(187, 182, 182);
+  transition-duration: 0.4s;
 }
 @font-face {
   font-family: fabrica;
@@ -49,13 +53,12 @@ body {
   font-size: 100px;
 }
 .welcomeMsgDiv {
-    -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently */
-
 }
 .galaxy {
   background-image: linear-gradient(40deg, #334d69, #7ba6d6, #8b8d84);
@@ -125,6 +128,29 @@ body {
 .qInput:focus {
   border-bottom: 1px solid rgb(255, 255, 255);
 }
+.chooseBg {
+  display: flex;
+  flex-direction: column;
+}
+.chooseBg,
 .enterName {
+  display: none;
   opacity: 0;
+}
+.sdf {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.bgimg {
+  flex-grow: 1;
+  height: 170px;
+  border: 2px solid rgb(153, 153, 153);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#frame {
+  height: 100vh;
+  width: 100vw;
 }

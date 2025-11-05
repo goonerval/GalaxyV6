@@ -136,6 +136,8 @@ function sweepUp() {
     onComplete: function () {
       const message = document.getElementById("welcomeMsgDiv");
       message.style.display = "none";
+      const name = document.getElementById("enterName");
+      name.style.display = "flex";
       startOnboarding();
     },
   });
@@ -210,17 +212,80 @@ function startOnboarding() {
     {
       y: 0,
       opacity: 1,
-      duration: 1,
+      duration: 0.5,
       ease: "power1.out",
-      stagger: 0.2,
+      stagger: 0.1,
     }
   );
 }
-function spread() {
+function ghost1() {
   gsap.to(".stagger1", {
     y: -20,
     opacity: 0,
-    duration: 1,
-    stagger: 0.2,
-  })
+    duration: 0.4,
+    onComplete: function () {
+      const message = document.getElementById("enterName");
+      message.style.display = "none";
+      part2();
+    },
+  });
+}
+let inputName = document.getElementById("inputName");
+inputName.addEventListener("keyup", function () {
+  if (event.key === "Enter") {
+    let UserName = inputName.value;
+    console.log("User Name Entered: " + UserName);
+    localStorage.setItem("name", UserName);
+    ghost1();
+  }
+});
+let UserName = localStorage.getItem("name");
+
+function part2() {
+  const name = document.getElementById("chooseBg");
+  name.style.display = "flex";
+
+  gsap.fromTo(
+    ".stagger2",
+    {
+      opacity: 0,
+      y: 50,
+    },
+    {
+      delay: 0.4,
+      y: 0,
+      opacity: 1,
+      duration: 0.8,
+      ease: "power1.out",
+      stagger: 0.1,
+    }
+  );
+}
+function ghost2() {
+  gsap.to(".stagger2", {
+    y: -20,
+    opacity: 0,
+    duration: 0.4,
+  });
+}
+
+let backgroundURL = localStorage.getItem("backgroundURL");
+if (backgroundURL == null) {
+  localStorage.setItem("backgroundURL", "assets/img/bg3.png");
+} else {
+}
+backgroundURL = localStorage.getItem("backgroundURL");
+
+document.documentElement.style.setProperty(
+  "--backgroundURL",
+  `url(${backgroundURL})`
+);
+
+function setBackground(bg) {
+  localStorage.setItem("backgroundURL", bg);
+  let backgroundURL = localStorage.getItem("backgroundURL");
+  document.documentElement.style.setProperty(
+    "--backgroundURL",
+    `url(${backgroundURL})`
+  );
 }

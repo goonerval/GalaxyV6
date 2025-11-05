@@ -23,9 +23,17 @@
       <a class="cta">Click to get started</a>
     </div>
     <div class="onboarding">
-      <div class="questionCard enterName stagger1">
+      <div class="questionCard enterName stagger1" id="enterName">
         <a class="question stagger1">What's your name?</a>
         <input type="text" class="qInput" id="inputName" />
+      </div>
+      <div class=" chooseBg stagger2" id="chooseBg">
+        <a class="question stagger2">Choose a Background</a>
+        <div class="sdf stagger2">
+          <div class="bgselect bg3 stagger2" onclick="setBackground('assets/img/bg3.png')"><img src="assets/img/bg3.png" class="bgimg"></div>
+          <div class="bgselect bg1 stagger2" onclick="setBackground('assets/img/bg1.webp')"><img src="assets/img/bg1.webp" class="bgimg"></div>
+          <div class="bgselect bg2 stagger2"onclick="setBackground('assets/img/bg2.jpg')"><img src="assets/img/bg2.jpg" class="bgimg"></div>
+        </div>
       </div>
     </div>
   </body>
