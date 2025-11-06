@@ -31,37 +31,43 @@
         <a class="question stagger2">Choose a Background</a>
         <div class="sdf stagger2">
           <div
-            class="bgselect bg3 stagger2"
+            class="bgselect stagger2"
             onclick="setBackground('assets/img/bg3.png')"
           >
             <img src="assets/img/bg3.png" class="bgimg" />
           </div>
           <div
-            class="bgselect bg1 stagger2"
+            class="bgselect stagger2"
             onclick="setBackground('assets/img/bg1.webp')"
           >
             <img src="assets/img/bg1.webp" class="bgimg" />
           </div>
           <div
-            class="bgselect bg2 stagger2"
+            class="bgselect stagger2"
             onclick="setBackground('assets/img/bg2.jpg')"
           >
             <img src="assets/img/bg2.jpg" class="bgimg" />
           </div>
           <div
-            class="bgselect bg2 stagger2"
+            class="bgselect stagger2"
             onclick="setBackground('assets/img/bg4.png')"
           >
             <img src="assets/img/bg4.png" class="bgimg" />
           </div>
           <div
-            class="bgselect bg2 stagger2"
+            class="bgselect stagger2"
             onclick="setBackground('assets/img/bg5.png')"
           >
             <img src="assets/img/bg5.png" class="bgimg" />
           </div>
+          <div class="bgselect stagger2 uploaddiv" id="uplaoddiv">
+            <img src="assets/img/upload.png" class="bgimg upload" />
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+          </div>
         </div>
-        <button class="continueButton stagger2" onclick="ghost2()">Continue</button>
+        <button class="continueButton stagger2" onclick="ghost2()">
+          Continue
+        </button>
       </div>
       <div class="questionCard finish stagger3" id="finish">
         <a class="question stagger3">You're All Set!</a>

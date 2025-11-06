@@ -321,7 +321,7 @@ function setBackground(bg) {
     `url(${backgroundURL})`
   );
 }
-let img = document.querySelectorAll(".bgimg");
+let img = document.querySelectorAll(".bgselect");
 
 img.forEach((el) => {
   el.addEventListener("mouseenter", () => {
@@ -332,6 +332,31 @@ img.forEach((el) => {
     img.forEach((e) => (e.style.opacity = "1"));
   });
 });
+const uploadDiv = document.getElementById("uplaoddiv");
+const fileInput = document.getElementById("fileInput");
+let file
+uploadDiv.addEventListener("click", () => {
+  fileInput.click();
+  file = ""
+});
+fileInput.addEventListener("change", () => {
+ file = fileInput.files[0];
+
+  if (file && file.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const uploadedimg = reader.result;
+      localStorage.setItem("backgroundURL", uploadedimg)
+      backgroundURL = uploadedimg
+      document.documentElement.style.setProperty(
+        "--backgroundURL",
+        `url(${backgroundURL})`
+      );
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
 function ghost3() {
   window.location.href = "main.html";
 }

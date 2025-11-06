@@ -133,7 +133,8 @@ body {
   flex-direction: column;
 }
 
-.enterName, .chooseBg, .finish {
+.enterName,
+.finish {
   display: none;
   opacity: 0;
 }
@@ -149,7 +150,26 @@ body {
   border: 2px solid rgb(153, 153, 153);
   border-radius: 10px;
   cursor: pointer;
-  transition: opacity 0.3s ease;
+}
+.bgselect {
+    transition: opacity 0.3s ease;
+
+}
+.upload {
+  border: 0px;
+  max-width: 60%;
+  height: auto;
+  opacity: 0.8;
+}
+
+.uploaddiv {
+  width: 269px;
+  height: 150px;
+  border-radius: 10px;
+  border: 2px solid rgb(153, 153, 153);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .continueButton {
   height: 40px;
@@ -172,7 +192,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 
 /*--------------------------------*/
 /*--------------------------------*/
