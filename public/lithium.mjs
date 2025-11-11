@@ -83,7 +83,7 @@ if (window.self === window.top) {
  * @param {string} [template="https://search.brave.com/search?q=%s"] - Search URL template.
  * @returns {string} Valid URL string.
  */
-export function makeURL(input, template = "https://search.brave.com/search?q=%s") {
+export function makeURL(input, template = "https://google.com/search?q=%s") {
 	try {
 		return new URL(input).toString();
 	} catch (err) {}
