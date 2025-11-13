@@ -2,7 +2,6 @@
 ///          Init          ///
 //////////////////////////////
 import { BareMuxConnection } from "https://unpkg.com/@mercuryworkshop/bare-mux@2.1.7/dist/index.mjs";
-
 //////////////////////////////
 ///         Options        ///
 //////////////////////////////
@@ -152,6 +151,7 @@ export function getWisp() {
 export async function proxySJ(input) {
   const url = makeURL(input);
   return scramjet.encodeUrl(url);
+
 }
 export async function proxyUV(input) {
   const url = makeURL(input);

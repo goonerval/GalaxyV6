@@ -25,28 +25,46 @@ document.addEventListener("keyup", async (e) => {
     ) {
       input.value = "https://" + input.value;
     }
+    let loadingNotice = document.createElement("div");
+    function loadingShow() {
+      loadingNotice.className = "notice";
+      loadingNotice.style.animation = "noticeShow 0.4s forwards";
+      loadingNotice.textContent = "Loading...";
+      document.body.appendChild(loadingNotice);
+      console.log("Final URL:", input.value);
+    }
+    function loadingHide() {
+      loadingNotice.textContent = "Done!";
+      loadingNotice.style.animation = "noticeHide 0.4s ease 0.3s forwards";
+    }
 
-    console.log("Final URL:", input.value);
+    loadingNotice.addEventListener("click", function () {
+      loadingNotice.style.animation = "noticeHide 0.4s forwards";
+    });
     let url;
     let proxyType = localStorage.getItem("proxyType"); //Checks for proxy
     if (proxyType === "SJ") {
       url = await proxySJ(makeURL(input.value));
+      loadingShow();
       console.log("set to SJ");
     } else if (proxyType === "UV") {
       url = await proxyUV(makeURL(input.value));
+      loadingShow();
       console.log("set to UV");
     } else {
       localStorage.setItem("proxyType", "SJ");
       proxyType = localStorage.getItem("proxyType");
       url = await proxySJ(makeURL(input.value));
+      loadingShow();
       console.log("Not set");
     }
     iframe.src = url;
     if (proxyType === "SJ") {
       input.value = getOriginalUrl(iframe.src);
     } else if (proxyType === "UV") {
-      input.value =  __uv$config.decodeUrl(iframe.src.split(__uv$config.prefix)[1]);
-
+      input.value = __uv$config.decodeUrl(
+        iframe.src.split(__uv$config.prefix)[1]
+      );
     } else {
       input.value = getOriginalUrl(iframe.src);
     }
@@ -55,6 +73,7 @@ document.addEventListener("keyup", async (e) => {
     let currentTab = document.getElementById("tab" + tabNumber);
     let tabName = currentTab?.querySelector(".tabName");
     iframe.onload = () => {
+      loadingHide();
       try {
         tabName.textContent =
           iframe.contentDocument?.title + " (" + proxyType + ")" || "Untitled";

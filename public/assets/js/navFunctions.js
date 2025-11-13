@@ -13,7 +13,16 @@ const shortcut = document.getElementById("AddShortcut");
 const iframe = document.getElementById(
   "frame" + activeTabId.replace("tab", "")
 );
-
+let PchangeNotice = document.createElement("div");
+function pchangeShow(proxyType) {
+  PchangeNotice.className = "notice";
+  PchangeNotice.textContent = "Set to " + proxyType;
+  document.body.appendChild(PchangeNotice);
+  PchangeNotice.style.animation = "noticeShow 0.4s forwards";
+  PchangeNotice.addEventListener("animationend", function() {
+      PchangeNotice.style.animation = "noticeHide 0.4s ease 1s forwards";
+  })
+}
 reload.addEventListener("click", () => {
   iframe.contentWindow.location.reload();
   input.value = getOriginalUrl(iframe.src);
@@ -43,6 +52,7 @@ setUV.addEventListener("click", () => {
   proxyMenu.classList.remove("show");
   moreMenu.classList.remove("show");
   overlay.classList.remove("show");
+  pchangeShow('UV');
 });
 
 setSJ.addEventListener("click", () => {
@@ -51,6 +61,8 @@ setSJ.addEventListener("click", () => {
   proxyMenu.classList.remove("show");
   moreMenu.classList.remove("show");
   overlay.classList.remove("show");
+  pchangeShow('SJ');
+
 });
 
 overlay.addEventListener("click", () => {
