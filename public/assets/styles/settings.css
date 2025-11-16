@@ -1,0 +1,243 @@
+/* ===== GLOBAL ===== */
+body {
+  background: #0d0d0d;
+  color: #d7d7d7;
+  font-family: fabrica;
+  margin: 0;
+  padding: 40px 20%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smoother font rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+}
+@font-face {
+  font-family: fabrica;
+  src: url(/assets/fonts/fabrica-font/Fabrica-ZOjx.otf) format("woff2");
+}
+@font-face {
+  font-family: gravity;
+  src: url(/assets/fonts/gravity-font/GravityLight-66Ro.otf) format("woff2");
+}
+@font-face {
+  font-family: nunito;
+  src: url(/assets/fonts/nunito-font/NunitoExtralight-YzEeq.ttf);
+}
+@font-face {
+  font-family: royalCrescent;
+  src: url(/assets/fonts/royal-crescent-font/RoyalCrescent-G8BP.ttf);
+}
+
+
+h1 {
+  font-size: 48px;
+  font-weight: 300;
+  margin: 0 0 10px 0;
+  color: #ffffff;
+  margin-bottom: 0;
+}
+
+.SettingDesc {
+  margin-top: 0;
+  font-size: 18px;
+  opacity: 0.7;
+  margin-bottom: 40px;
+}
+
+
+.cloak {
+  margin-bottom: 30px;
+}
+.block {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 25px;
+  border-radius: 20px;
+  margin-bottom: 60px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+}
+
+.blockTitle {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+
+.desc {
+  opacity: 0.75;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+
+button {
+  font-family: fabrica;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #d7d7d7;
+  cursor: pointer;
+  transition: 0.25s;
+  margin-right: 10px;
+}
+
+button:hover {
+  background: #262626;
+  border-color: #444;
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.08);
+}
+
+
+.circle {
+  cursor: pointer;
+  appearance: none;
+  position: relative;
+  width: 65px;
+  height: 32px;
+  border-radius: 20px;
+  border: 1px solid #444;
+  background: linear-gradient(#111, #0a0a0a);
+  box-shadow: inset 0 0 4px #000;
+  transition: 0.25s;
+  margin-bottom: 12px;
+}
+
+.circle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  background: #e0e0e0;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #0006;
+  transition: 0.25s;
+}
+
+.circle:checked {
+  background: linear-gradient(#ffffff, #777777);
+  border-color: #d4d4d4;
+}
+
+.circle:checked::after {
+  left: calc(100% - 16px);
+  background: white;
+}
+
+
+.menu {
+  background: rgba(255,255,255,0.03);
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.menuItem {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.menuItem:hover {
+  background: #262626;
+  transform: translateY(-2px);
+}
+.sdf {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 1000px;
+}
+
+.chooseBg {
+  display: flex;
+  flex-direction: column;
+}
+
+.bgselect {
+  transition: opacity 0.3s ease;
+}
+
+.bgimg {
+  flex-grow: 1;
+  height: 150px;
+  border: 2px solid rgb(153, 153, 153);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.upload {
+  border: 0px;
+  max-width: 60%;
+  height: auto;
+  opacity: 0.8;
+}
+
+.uploaddiv {
+  width: 269px;
+  height: 150px;
+  border-radius: 10px;
+  border: 2px solid rgb(153, 153, 153);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#sideNav {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 15px 10px;
+  z-index: 1000;
+}
+
+#sideNav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#sideNav li {
+  margin: 10px 0;
+}
+
+#sideNav a {
+  color: #d7d7d7;
+  text-decoration: none;
+  font-family: fabrica;
+  font-size: 14px;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: 0.25s;
+}
+
+#sideNav a:hover,
+#sideNav a.active {
+  background: #262626;
+  color: #ffffff;
+  transform: translateX(-3px);
+}

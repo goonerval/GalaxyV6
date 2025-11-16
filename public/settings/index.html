@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Settings</title>
+    <link rel="stylesheet" href="../assets/styles/settings.css" />
+    <script src="../assets/js/settings.js"></script>
+  </head>
+  <body>
+    <nav id="sideNav">
+      <ul>
+        <li><a href="#cloaks">Cloaks</a></li>
+        <li><a href="#OS">OS Settings</a></li>
+        <li><a href="#browser">Browser Settings</a></li>
+        <li><a href="#about">About Galaxy</a></li>
+      </ul>
+    </nav>
+
+    <h1>Settings</h1>
+    <p class="SettingDesc">Customize your experience.</p>
+    <div class="OS"></div>
+    <div class="cloaks" id="cloaks">
+      <h1 class="cloak">Cloaks</h1>
+      <div class="block">
+        <h2 class="blockTitle">AB Cloak</h2>
+        <p class="desc">
+          Opens the website in a hidden url and prevents blockers like
+          GoGuardian from seeing your screen. If about:blank is blocked, use
+          blob
+        </p>
+        <div>
+          <button>Launch About:Blank</button>
+          <button>Launch Blob</button>
+        </div>
+      </div>
+      <div class="block">
+        <h2 class="blockTitle">Auto Cloak</h2>
+        <p class="desc">
+          Automatically opens the website in about:blank or blob upon entering.
+          <br />
+          <span style="color: red"
+            >*You must allow pop ups for this to work.</span
+          >
+        </p>
+        <p>Auto About Blank</p>
+        <input type="checkbox" role="switch" class="circle" onclick="" />
+        <p>Auto Blob</p>
+        <input type="checkbox" role="switch" class="circle" onclick="" />
+      </div>
+      <div class="block">
+        <h2 class="blockTitle">Tab Presets</h2>
+        <p class="desc">Changes how the tab looks like</p>
+        <div id="moreMenu" class="menu">
+          <div class="menuItem">Google Classroom</div>
+          <div class="menuItem">Google Drive</div>
+          <div class="menuItem">Classlink</div>
+          <div class="menuItem">Clever</div>
+          <div class="menuItem" style="color: rgb(241, 89, 89)">Reset</div>
+        </div>
+      </div>
+    </div>
+    <div class="OS" id="OS">
+      <h1 class="cloak">OS Settings</h1>
+      <div class="block">
+        <h2 class="blockTitle">Change your name</h2>
+        <p class="desc">uhh pretty straighforward</p>
+        <div>
+          <input type="text" id="nameInput" placeholder="Enter your name" />
+        </div>
+      </div>
+      <div class="block">
+        <h2 class="blockTitle">Change Background</h2>
+        <p class="desc">Also pretty self-explanatory</p>
+        <div class="chooseBg stagger2" id="chooseBg">
+          <div class="sdf stagger2">
+            <div
+              class="bgselect stagger2"
+              onclick="setBackground('../img/bg3.png')"
+            >
+              <img src="../assets/img/bg3.png" class="bgimg" />
+            </div>
+            <div
+              class="bgselect stagger2"
+              onclick="setBackground('../img/bg1.webp')"
+            >
+              <img src="../assets/img/bg1.webp" class="bgimg" />
+            </div>
+            <div
+              class="bgselect stagger2"
+              onclick="setBackground('../img/bg2.jpg')"
+            >
+              <img src="../assets/img/bg2.jpg" class="bgimg" />
+            </div>
+            <div
+              class="bgselect stagger2"
+              onclick="setBackground('../img/bg4.png')"
+            >
+              <img src="../assets/img/bg4.png" class="bgimg" />
+            </div>
+            <div
+              class="bgselect stagger2"
+              onclick="setBackground('../img/bg5.png')"
+            >
+              <img src="../assets/img/bg5.png" class="bgimg" />
+            </div>
+            <div class="bgselect stagger2 uploaddiv" id="uplaoddiv">
+              <img src="../assets/img/upload.png" class="bgimg upload" />
+              <input
+                type="file"
+                id="fileInput"
+                accept="image/*"
+                style="display: none"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="browser" id="browser">
+      <h1 class="cloak">Browser Settings</h1>
+      <div class="block">
+        <h2 class="blockTitle">Change Proxy</h2>
+        <p class="desc">
+          This setting changes the browser's proxy to either Ultraviolet or
+          Scramjet. <br />
+          Scramjet supports more websites however, there will be some websites
+          where Ultraviolet is superior.<br />Setting the proxy type to "auto"
+          will automatically switch the proxy for specific websites where one
+          functions and the other does not. <br />
+          <br />
+          The default is auto.
+        </p>
+        <div>
+          <button>Use Scramjet</button>
+          <button>Use Ultraviolet</button>
+          <button>Auto</button>
+        </div>
+      </div>
+      <div class="block">
+        <h2 class="blockTitle">Change Search Engine</h2>
+        <p class="desc">
+          Changes the search engine of the proxy. <br />
+          Please note that Google will <b>not</b> work with UV.
+        </p>
+        <div>
+          <button>Google</button>
+          <button>Brave</button>
+          <button>DuckDuckGo</button>
+        </div>
+      </div>
+    </div>
+    <div class="about" id="about">
+      <h1 class="cloak">About Galaxy</h1>
+      <div class="block">
+        <h2 class="blockTitle">Made by Rogo</h2>
+        <p>(ik it's so tuff right)</p>
+        <button>Github</button>
+        <button>Discord</button>
+      </div>
+    </div>
+  </body>
+</html>
