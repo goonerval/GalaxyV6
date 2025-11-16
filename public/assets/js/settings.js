@@ -73,29 +73,20 @@ function aboutBlank() {
 const blobChecked = document.getElementById("autoBlob");
 const aboutChecked = document.getElementById("autoAbout");
 
-blobChecked.checked = localStorage.getItem("autoBlob") === "true";
-aboutChecked.checked = localStorage.getItem("autoAbout") === "true";
-
-function auto() {
+function checkAutoStatus() {
+  console.log("Checkbox clicked");
   localStorage.setItem("autoBlob", blobChecked.checked);
   localStorage.setItem("autoAbout", aboutChecked.checked);
-
-  if (blobChecked.checked) {
-    launchBlob();
-  }
-
-  if (aboutChecked.checked) {
-    aboutBlank();
-  }
-
-  if (aboutChecked.checked) {
-    location.replace(
-      "https://lightingshovestature.com/pwy8jeq59?key=00e97abb2b6ada2db15543761f62ca2d"
-    );
-  }
 }
+function loadAutoStatus() {
+  console.log("Loading auto status");
+  blobChecked.checked = localStorage.getItem("autoBlob")== "true";
+  aboutChecked.checked = localStorage.getItem("autoAbout") == "true";
+}
+window.addEventListener("load", loadAutoStatus);	
 
-auto();
+//The blob/about:blank will be executed in mainAnimation.js
+
 function updateTitleAndFavicon(titleName, faviconURL) {
   localStorage.setItem("pageTitle", titleName);
   localStorage.setItem("pageFavicon", faviconURL);

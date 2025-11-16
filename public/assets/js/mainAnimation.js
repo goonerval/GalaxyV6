@@ -6,7 +6,7 @@ let UserName = localStorage.getItem("name");
 let backgroundURL = localStorage.getItem("backgroundURL");
 
 if (backgroundURL == null) {
-  localStorage.setItem("backgroundURL", "assets/img/bg3.png");
+  localStorage.setItem("backgroundURL", "../img/bg3.png");
 }
 backgroundURL = localStorage.getItem("backgroundURL");
 
@@ -216,3 +216,89 @@ function openWindow(windowSrc) {
     });
   }
 }
+const currentSiteUrl = window.location.href + "?redirect=true";
+function launchBlob() {
+  const htmlContent = `
+    <html>
+      <head>
+        <title>Galaxy</title>
+        <style>
+          body,
+          html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+          }
+          iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+          }
+        </style>
+      </head>
+      <body>
+        <iframe src="${currentSiteUrl}"></iframe>
+      </body>
+    </html>
+	`;
+
+  const blob = new Blob([htmlContent], {
+    type: "text/html",
+  });
+
+  const blobUrl = URL.createObjectURL(blob);
+
+  let newWindow = window.open(blobUrl);
+  if (newWindow) {
+    newWindow.onload = () => {
+      newWindow.document.title = "Galaxy";
+    };
+  }
+}
+
+function aboutBlank() {
+  var y = window.open("about:blank#", "_blank");
+  y.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+            <title>Classroom</title>
+        </head>
+        <body>
+          <iframe src="/"></iframe>
+        </body>
+        <style>
+    body,iframe {
+    background: #000;
+
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    border: 0px;
+    margin: 0px;
+    }
+    </style>
+      </html>
+    `);
+  y.document.close();
+}
+
+function auto() {
+  if (localStorage.getItem("autoBlob") === "true") {
+    launchBlob();
+  }
+
+  if (localStorage.getItem("autoAbout") === "true") {
+    aboutBlank();
+    location.replace(
+      "https://lightingshovestature.com/pwy8jeq59?key=00e97abb2b6ada2db15543761f62ca2d"
+    );
+  }
+}
+auto();
