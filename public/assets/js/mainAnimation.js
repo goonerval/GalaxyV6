@@ -146,8 +146,8 @@ function openWindow(windowSrc) {
       windowValue = "0";
       windowEl.style.left = "0px";
       windowEl.style.top = "0px";
-      windowEl.style.width = window.innerWidth + "px";
-      windowEl.style.height = window.innerHeight + "px";
+      windowEl.style.width = "105%";
+      windowEl.style.height = "105%";
     } else {
       squares.style.display = "none";
       square.style.display = "flex";
