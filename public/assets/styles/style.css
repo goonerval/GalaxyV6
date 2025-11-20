@@ -230,7 +230,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
   z-index: 1000;
 }
 .navItems {
@@ -240,18 +240,23 @@ body {
   display: flex;
   text-align: center;
   justify-content: center;
+  opacity: 0;
+;
 }
+
 .icons {
   height: 35px;
   width: auto;
   color: white;
 }
+
 .window {
   display: flex;
   position: absolute;
   flex-direction: column;
   height: 50%;
-  width: 50%;}
+  width: 50%;
+}
 .windowTop {
   display: flex;
   flex-direction: row;
@@ -342,8 +347,8 @@ body {
   transition: opacity 0.2s ease;
 }
 .resize-handle {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   position: absolute;
   z-index: 10;
 }
