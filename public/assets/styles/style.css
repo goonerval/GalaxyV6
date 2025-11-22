@@ -393,6 +393,21 @@ body {
   width: 5px;
   right: -3px;
   top: 10px;
-  bottom: 10px;
   cursor: ew-resize;
 }
+.snap-preview {
+  position: fixed;
+  top: 0px;
+  width: 50vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 999999;
+}
+
+#snap-left { left: 0; }
+#snap-right { right: 0; }
+.snap-active { opacity: 1; }

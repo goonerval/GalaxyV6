@@ -23,7 +23,10 @@ gsap.fromTo(
 
 let zindex = 0;
 
-function openWindow(windowSrc) {
+function openWindow(windowSrc) { //fuck I should've added comments; I forgot what all of this does
+  const snapLeft = document.getElementById("snap-left");
+  const snapRight = document.getElementById("snap-right");
+  let snapTarget = null;
   const windowEl = document.createElement("div");
   const iframe = document.createElement("iframe");
   let windowValue = "1";
@@ -65,7 +68,6 @@ function openWindow(windowSrc) {
     <div class="resize-handle resize-left"></div>
   `;
 
-  // control buttons
   const squareBtn = windowEl.querySelector(".square");
   const closeBtn = windowEl.querySelector(".closeIcon");
   const minimizeBtn = windowEl.querySelector(".minimize");
@@ -74,7 +76,6 @@ function openWindow(windowSrc) {
   closeBtn.addEventListener("click", closeWindow);
   minimizeBtn.addEventListener("click", minimizeWindow);
 
-  // iframe
   iframe.className = "windowFrame";
   iframe.src = windowSrc;
   iframe.style.width = "100%";
@@ -104,13 +105,24 @@ function openWindow(windowSrc) {
   let offset = { x: 0, y: 0 };
   const allIframes = document.querySelectorAll(".windowFrame");
 
-  // nav bar height
   const navBar = document.querySelector(".nav");
   const navBarHeight = navBar ? navBar.offsetHeight : 0;
 
   controls.addEventListener("mousedown", (e) => {
     windowEl.style.transition = "0s";
-    if (windowValue === "1") {
+    if (windowEl.classList.contains("snapped")) {
+      console.log("restoring");
+      windowEl.classList.remove("snapped");
+      windowEl.style.width = "900px";
+      windowEl.style.height = "500px";
+      allIframes.forEach((f) => (f.style.pointerEvents = "none"));
+
+      windowEl.style.transition = "0s";
+      windowEl.style.top = "0px";
+      isDragging = true;
+      offset.x = e.clientX - windowEl.offsetLeft;
+      offset.y = e.clientY - windowEl.offsetTop;
+    } else if (windowValue === "1") {
       allIframes.forEach((f) => (f.style.pointerEvents = "none"));
       isDragging = true;
       offset.x = e.clientX - windowEl.offsetLeft;
@@ -148,8 +160,23 @@ function openWindow(windowSrc) {
 
       windowEl.style.left = Math.max(0, Math.min(newX, maxX)) + "px";
       windowEl.style.top = Math.max(0, Math.min(newY, maxY)) + "px";
-    }
 
+      const snapMargin = 100;
+      snapTarget = null;
+
+      if (e.clientX < snapMargin) {
+        snapLeft.classList.add("snap-active");
+        snapRight.classList.remove("snap-active");
+        snapTarget = "left";
+      } else if (e.clientX > window.innerWidth - snapMargin) {
+        snapRight.classList.add("snap-active");
+        snapLeft.classList.remove("snap-active");
+        snapTarget = "right";
+      } else {
+        snapLeft.classList.remove("snap-active");
+        snapRight.classList.remove("snap-active");
+      }
+    }
     if (isResizing) {
       const dx = e.clientX - offset.x;
       const dy = e.clientY - offset.y;
@@ -194,11 +221,9 @@ function openWindow(windowSrc) {
         newWidth += dx;
       }
 
-      // clamp minimum size
       newWidth = Math.max(200, newWidth);
       newHeight = Math.max(150, newHeight);
 
-      // clamp against bottom nav bar
       const maxBottom = window.innerHeight - navBarHeight;
       if (newTop + newHeight > maxBottom) {
         newHeight = maxBottom - newTop;
@@ -217,9 +242,31 @@ function openWindow(windowSrc) {
   document.addEventListener("mouseup", () => {
     isDragging = false;
     isResizing = false;
+    if (snapTarget === "left") {
+      windowEl.classList.add("snapped");
+      snapLeft.classList.remove("snap-active");
+      windowEl.style.transition = "all 0.25s ease";
+      windowEl.style.left = "0px";
+      windowEl.style.top = "0px";
+      windowEl.style.width = "50vw";
+      windowEl.style.height = "100vh";
+    } else if (snapTarget === "right") {
+      windowEl.classList.add("snapped");
+      snapRight.classList.remove("snap-active");
+      windowEl.style.transition = "all 0.25s ease";
+      windowEl.style.left = "50vw";
+      windowEl.style.top = "0px";
+      windowEl.style.width = "50vw";
+      windowEl.style.height = "100vh";
+    }
+
+    snapTarget = null;
+    snapLeft.classList.remove("snap-active");
+    snapRight.classList.remove("snap-active");
+
     allIframes.forEach((f) => (f.style.pointerEvents = "auto"));
   });
-        
+
   let square = windowEl.querySelector("#square");
   let squares = windowEl.querySelector("#squares");
 
