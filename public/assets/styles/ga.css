@@ -385,7 +385,7 @@ p {
   flex-wrap: wrap;
   overflow: hidden;
   margin-bottom: 2rem;
-}
+ }
 
 .pinned-separator {
   width: var(--width);

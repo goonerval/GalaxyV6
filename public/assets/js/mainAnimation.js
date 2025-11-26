@@ -54,6 +54,8 @@ function openWindow(windowSrc) {
         </div>
       </div>
     </div>
+    
+    <div class="window-overlay"></div> 
 
     <div class="resize-handle resize-top-left"></div>
     <div class="resize-handle resize-top-right"></div>
@@ -69,6 +71,31 @@ function openWindow(windowSrc) {
   const squareBtn = windowEl.querySelector(".square");
   const closeBtn = windowEl.querySelector(".closeIcon");
   const minimizeBtn = windowEl.querySelector(".minimize");
+  
+  const overlay = windowEl.querySelector(".window-overlay");
+
+  function focusCurrentWindow() {
+    windowEl.style.zIndex = ++zindex;
+    
+    const allWindows = document.querySelectorAll(".window");
+    
+    allWindows.forEach((win) => {
+      const winOverlay = win.querySelector(".window-overlay");
+      if (winOverlay) {
+        if (win === windowEl) {
+          winOverlay.style.display = "none";
+        } else {
+          winOverlay.style.display = "block";
+        }
+      }
+    });
+  }
+
+  overlay.addEventListener("mousedown", (e) => {
+    focusCurrentWindow();
+  });
+  
+  focusCurrentWindow();
 
   squareBtn.addEventListener("click", changeIcon);
   closeBtn.addEventListener("click", closeWindow);
@@ -110,39 +137,43 @@ function openWindow(windowSrc) {
   const navBarHeight = navBar ? navBar.offsetHeight : 0;
 
   controls.addEventListener("mousedown", (e) => {
-    windowEl.style.transition = "0s";
-    if (windowEl.classList.contains("snapped")) {
-      console.log("restoring");
-      windowEl.classList.remove("snapped");
-      windowEl.style.width = "900px";
-      windowEl.style.height = "500px";
-      allIframes.forEach((f) => (f.style.pointerEvents = "none"));
+      focusCurrentWindow(); 
 
       windowEl.style.transition = "0s";
-      windowEl.style.top = "0px";
-      isDragging = true;
-      offset.x = e.clientX - windowEl.offsetLeft;
-      offset.y = e.clientY - windowEl.offsetTop;
-    } else if (windowValue === "1") {
-      allIframes.forEach((f) => (f.style.pointerEvents = "none"));
-      isDragging = true;
-      offset.x = e.clientX - windowEl.offsetLeft;
-      offset.y = e.clientY - windowEl.offsetTop;
-    } else {
-      changeIcon();
-      allIframes.forEach((f) => (f.style.pointerEvents = "none"));
+      if ((windowEl.classList.contains("snapped"))) {
+        console.log("restoring");
+        windowEl.classList.remove("snapped");
+        windowEl.style.width = "900px";
+        windowEl.style.height = "500px";
+        allIframes.forEach((f) => (f.style.pointerEvents = "none"));
 
-      windowEl.style.transition = "0s";
-      windowEl.style.top = "0px";
-      isDragging = true;
-      offset.x = e.clientX - windowEl.offsetLeft;
-      offset.y = e.clientY - windowEl.offsetTop;
-    }
+        windowEl.style.transition = "0s";
+        windowEl.style.top = "0px";
+        isDragging = true;
+        offset.x = e.clientX - windowEl.offsetLeft;
+        offset.y = e.clientY - windowEl.offsetTop;
+      } else if (windowValue === "1") {
+        allIframes.forEach((f) => (f.style.pointerEvents = "none"));
+        isDragging = true;
+        offset.x = e.clientX - windowEl.offsetLeft;
+        offset.y = e.clientY - windowEl.offsetTop;
+      } else {
+        changeIcon();
+        allIframes.forEach((f) => (f.style.pointerEvents = "none"));
+
+        windowEl.style.transition = "0s";
+        windowEl.style.top = "0px";
+        isDragging = true;
+        offset.x = e.clientX - windowEl.offsetLeft;
+        offset.y = e.clientY - windowEl.offsetTop;
+      }
+    
   });
 
   handles.forEach((handle) => {
     handle.addEventListener("mousedown", (e) => {
       e.stopPropagation();
+      focusCurrentWindow();
       isResizing = true;
       currentHandle = handle;
 
@@ -188,82 +219,81 @@ function openWindow(windowSrc) {
       }
     }
 
-if (isResizing) {
-  const dx = e.clientX - startX;
-  const dy = e.clientY - startY;
+    if (isResizing) {
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
 
-  const minW = 200;
-  const minH = 150;
+      const minW = 200;
+      const minH = 150;
 
-  if (
-    currentHandle.classList.contains("resize-right") ||
-    currentHandle.classList.contains("resize-top-right") ||
-    currentHandle.classList.contains("resize-bottom-right")
-  ) {
-    let newW = startW + dx;
-    const maxW = window.innerWidth - startL; 
-    newW = Math.max(minW, Math.min(newW, maxW));
-    windowEl.style.width = newW + "px";
-  }
- if (
-    currentHandle.classList.contains("resize-bottom") ||
-    currentHandle.classList.contains("resize-bottom-left") ||
-    currentHandle.classList.contains("resize-bottom-right")
-  ) {
-    let newH = startH + dy;
+      if (
+        currentHandle.classList.contains("resize-right") ||
+        currentHandle.classList.contains("resize-top-right") ||
+        currentHandle.classList.contains("resize-bottom-right")
+      ) {
+        let newW = startW + dx;
+        const maxW = window.innerWidth - startL;
+        newW = Math.max(minW, Math.min(newW, maxW));
+        windowEl.style.width = newW + "px";
+      }
+      if (
+        currentHandle.classList.contains("resize-bottom") ||
+        currentHandle.classList.contains("resize-bottom-left") ||
+        currentHandle.classList.contains("resize-bottom-right")
+      ) {
+        let newH = startH + dy;
 
-    const maxBottom =
-      window.innerHeight - navBarHeight - startT;
+        const maxBottom = window.innerHeight - navBarHeight - startT;
 
-    newH = Math.max(minH, Math.min(newH, maxBottom));
+        newH = Math.max(minH, Math.min(newH, maxBottom));
 
-    windowEl.style.height = newH + "px";
-  }
+        windowEl.style.height = newH + "px";
+      }
 
-  if (
-    currentHandle.classList.contains("resize-left") ||
-    currentHandle.classList.contains("resize-top-left") ||
-    currentHandle.classList.contains("resize-bottom-left")
-  ) {
-    let newL = startL + dx;
-    let newW = startW - dx;
+      if (
+        currentHandle.classList.contains("resize-left") ||
+        currentHandle.classList.contains("resize-top-left") ||
+        currentHandle.classList.contains("resize-bottom-left")
+      ) {
+        let newL = startL + dx;
+        let newW = startW - dx;
 
-    if (newL < 0) {
-      newL = 0;
-      newW = startL + startW;
+        if (newL < 0) {
+          newL = 0;
+          newW = startL + startW;
+        }
+
+        if (newW < minW) {
+          newW = minW;
+          newL = startL + startW - minW;
+        }
+
+        windowEl.style.left = newL + "px";
+        windowEl.style.width = newW + "px";
+      }
+
+      if (
+        currentHandle.classList.contains("resize-top") ||
+        currentHandle.classList.contains("resize-top-left") ||
+        currentHandle.classList.contains("resize-top-right")
+      ) {
+        let newT = startT + dy;
+        let newH = startH - dy;
+
+        if (newT < 0) {
+          newT = 0;
+          newH = startH + startT;
+        }
+
+        if (newH < minH) {
+          newH = minH;
+          newT = startT + startH - minH;
+        }
+
+        windowEl.style.top = newT + "px";
+        windowEl.style.height = newH + "px";
+      }
     }
-
-    if (newW < minW) {
-      newW = minW;
-      newL = startL + startW - minW;
-    }
-
-    windowEl.style.left = newL + "px";
-    windowEl.style.width = newW + "px";
-  }
-
-  if (
-    currentHandle.classList.contains("resize-top") ||
-    currentHandle.classList.contains("resize-top-left") ||
-    currentHandle.classList.contains("resize-top-right")
-  ) {
-    let newT = startT + dy;
-    let newH = startH - dy;
-
-    if (newT < 0) {
-      newT = 0;
-      newH = startH + startT;
-    }
-
-    if (newH < minH) {
-      newH = minH;
-      newT = startT + startH - minH;
-    }
-
-    windowEl.style.top = newT + "px";
-    windowEl.style.height = newH + "px";
-  }
-}
   });
 
   document.addEventListener("mouseup", () => {
@@ -328,9 +358,8 @@ if (isResizing) {
       windowEl.remove();
     });
   }
-  windowEl.addEventListener("mousedown", () => {
-    windowEl.style.zIndex = ++zindex;
-  });
+  
+
   function minimizeWindow() {
     const minimizedContainer = document.getElementById("minimizedContainer");
     const icon = document.createElement("div");
@@ -376,14 +405,14 @@ if (isResizing) {
       windowEl.style.left = "25%";
       windowEl.style.top = "25%";
       windowEl.style.opacity = "1";
-      windowEl.style.zIndex = ++zindex;
+      
+      focusCurrentWindow();
 
       icon.remove();
       preview.remove();
     });
   }
-}
-const currentSiteUrl = window.location.href + "?redirect=true";
+}const currentSiteUrl = window.location.href + "?redirect=true";
 function launchBlob() {
   const htmlContent = `
     <html>

@@ -431,3 +431,11 @@ body {
 .snap-active {
   opacity: 1;
 }
+.window-overlay {
+  position: absolute;
+  top: 25px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 25px);
+  display: none;
+}
