@@ -33,10 +33,10 @@ document.addEventListener("keyup", async (e) => {
       input.value = "https://" + input.value;
     }
     let loadingNotice = document.createElement("div");
-    function loadingShow() {
+    function loadingShow(text) {
       loadingNotice.className = "notice";
       loadingNotice.style.animation = "noticeShow 0.4s forwards";
-      loadingNotice.textContent = "Loading...";
+      loadingNotice.textContent = text;
       document.body.appendChild(loadingNotice);
       console.log("Final URL:", input.value);
     }
@@ -48,20 +48,33 @@ document.addEventListener("keyup", async (e) => {
     loadingNotice.addEventListener("click", function () {
       loadingNotice.style.animation = "noticeHide 0.4s forwards";
     });
-    let url;
+    let url = input.value;
     let proxyType = localStorage.getItem("proxyType"); //Checks for proxy
-    if (proxyType == null || proxyType == "Auto") {
-      proxyType = "Auto"
+    if (url.includes("nvidia") || url.includes("geforce")) {
+      let geforceNotice = document.createElement("div");
+      geforceNotice.className = "notice";
+      geforceNotice.style.animation = "noticeShow 0.4s forwards";
+      geforceNotice.textContent =
+        "Open GeForce in dock bar for it to work (click to close)";
+      document.body.appendChild(geforceNotice);
+      console.log("Final URL:", input.value);
+      console.log("nvidia");
+      geforceNotice.addEventListener("click", function () {
+        console.log("CLOSING");
+        geforceNotice.style.animation = "noticeHide 0.4s forwards";
+      });
+    } else if (proxyType == null || proxyType == "Auto") {
+      proxyType = "Auto";
       const match = uvList.findIndex((base) => input.value.startsWith(base));
       if (match == -1) {
         console.log("loading SJ");
         url = await proxySJ(makeURL(input.value));
-        loadingShow();
+        loadingShow("Loading...");
       } else {
         console.log("loading UV");
 
         url = await proxyUV(makeURL(input.value));
-        loadingShow();
+        loadingShow("Loading...");
       }
     } else if (proxyType === "SJ") {
       url = await proxySJ(makeURL(input.value));
@@ -69,7 +82,7 @@ document.addEventListener("keyup", async (e) => {
       console.log("set to SJ");
     } else if (proxyType === "UV") {
       url = await proxyUV(makeURL(input.value));
-      loadingShow();
+      loadingShow("Loading...");
       console.log("set to UV");
     }
     iframe.src = url;
