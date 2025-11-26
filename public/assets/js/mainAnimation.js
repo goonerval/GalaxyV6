@@ -1,6 +1,6 @@
-if (localStorage.getItem("onboarding") == null) {
-  location.href = "onboarding/";
-}
+// if (localStorage.getItem("onboarding") == null) {
+//   location.href = "onboarding/";
+// }
 
 let UserName = localStorage.getItem("name");
 let backgroundURL = localStorage.getItem("backgroundURL");
@@ -33,8 +33,8 @@ function openWindow(windowSrc) {
 
   windowEl.className = "window";
   windowEl.style.position = "absolute";
-  windowEl.style.left = "25%";
-  windowEl.style.top = "25%";
+  windowEl.style.left = "10%";
+  windowEl.style.top = "10%";
   windowEl.style.zIndex = ++zindex;
   windowEl.style.transition = "opacity 0.3s ease";
 

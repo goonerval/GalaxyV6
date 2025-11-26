@@ -9,6 +9,9 @@
     <script defer src="../scram/scramjet.all.js"></script>
     <script type="module" defer src="../assets/js/search.js"></script>
     <script defer src="../assets/js/auto.js"></script>
+    <script src="../uv/uv.bundle.js"></script>
+    <script src="../uv/uv.sw.js"></script>
+    <script src="../uv/uv.config.js"></script>
     <link rel="stylesheet" href="../assets/styles/assets.css" />
   </head>
 
@@ -86,9 +89,20 @@
             <div class="checkbox_highlight"><a>Incremental</a></div>
           </label>
         </div>
+        <h2 class="pinned-title">
+          <img
+            src="../assets/img/icons/pin.png"
+            alt=""
+            style="height: 24px; width: 24px"
+          />
+          Pinned Apps
+        </h2>
       </div>
+      <div class="pinned-games"></div>
+      <hr class="pinned-separator" />
+
       <div class="games">
-        <div class="randomcard" id="randomGameButton">
+        <div class="randomcard gameStagger" id="randomGameButton">
           <div class="randombg"></div>
           <div class="randomblob"></div>
           <p>Surprise me!</p>

@@ -234,10 +234,10 @@ body {
   display: flex;
   position: absolute;
   flex-direction: column;
-  height: 50%;
-  width: 50%;
-  border-right: 1px solid rgba(255, 255, 255, 0.363);
-  border-left: 1px solid rgba(255, 255, 255, 0.363);
+  height: 80%;
+  width: 80%;
+  border-right: 1px solid #ffffff1f;
+  border-left: 1px solid #ffffff1f;
   border-radius: 7px;
 }
 .windowTop {
@@ -351,8 +351,8 @@ body {
 }
 
 .resize-top-right {
-  width: 15px;
-  height: 15px;
+  width: 10px;
+  height: 10px;
   top: -3px;
   right: -3px;
   cursor: nesw-resize;
