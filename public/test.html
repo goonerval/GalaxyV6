@@ -1,74 +1,33 @@
 <!DOCTYPE html>
-
-<!-- Ultimate Game Stash file-->
-<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
-
-<html>
+<html lang="en-us">
   <head>
-    <base href="https://cdn.jsdelivr.net/gh/genizy/polytrack@main/" />
-    <script>
-      window.jkdfgnjkndfg = document.querySelector("base").href;
-      fetch("simulation_worker.bundle.js")
-        .then((res) => res.text())
-        .then((text) => {
-          const blob = new Blob(
-            [text.replaceAll("replacethisplease", window.jkdfgnjkndfg)],
-            { type: "application/javascript" }
-          );
-          window.simulationworker = URL.createObjectURL(blob);
-        });
-      const ogworker = window.Worker;
-      window.Worker = function (scripturl, options) {
-        if (
-          typeof scripturl === "string" &&
-          scripturl.toLowerCase() === "simulation_worker.bundle.js"
-        ) {
-          scripturl = window.simulationworker;
-        }
-        return new ogworker(scripturl, options);
-      };
-      window.Worker.prototype = ogworker.prototype;
-
-      const ogfetch = window.fetch;
-      window.fetch = async function (input, init) {
-        if (typeof input === "string") {
-          input = input.replace(
-            "vps.kodub.com:43273",
-            "vpskodub.tmena1565.workers.dev"
-          );
-        } else if (input instanceof Request) {
-          const newUrl = input.url.replace(
-            "vps.kodub.com:43273",
-            "vpskodub.tmena1565.workers.dev"
-          );
-          input = new Request(newUrl, input);
-        }
-        return ogfetch(input, init);
-      };
-
-      const ogxml = XMLHttpRequest.prototype.open;
-      XMLHttpRequest.prototype.open = function (method, url, ...rest) {
-        if (typeof url === "string") {
-          url = url.replace(
-            "vps.kodub.com:43273",
-            "vpskodub.tmena1565.workers.dev"
-          );
-        }
-        return ogxml.call(this, method, url, ...rest);
-      };
-    </script>
-    <link rel="manifest" href="manifest.json" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Unity WebGL Player | Highway Traffic</title>
+    <base
+      href="https://html5.gamedistribution.com/rvvASMiM/7c151f5e29eb40a591edfe1823e1d0ea/Build"
     />
+
+    <link rel="shortcut icon" href="TemplateData/favicon.ico" />
+    <link rel="stylesheet" href="TemplateData/style.css" />
+    <script src="TemplateData/UnityProgress.js"></script>
+    <script src="Build/UnityLoader.js"></script>
+    <script>
+      var gameInstance = UnityLoader.instantiate(
+        "gameContainer",
+        "Build/highway-traffic.json",
+        { onProgress: UnityProgress }
+      );
+    </script>
   </head>
-
   <body>
-    <canvas id="screen"></canvas>
-    <div id="ui"></div>
-    <div id="transition-layer"></div>
-
-    <script type="module" src="main.bundle.js" defer></script>
+    <div class="webgl-content">
+      <div id="gameContainer" style="width: 960px; height: 600px"></div>
+      <div class="footer">
+        <div class="webgl-logo"></div>
+        <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
+        <div class="title">Highway Traffic</div>
+      </div>
+    </div>
   </body>
 </html>

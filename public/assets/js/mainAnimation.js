@@ -1,6 +1,6 @@
-// if (localStorage.getItem("onboarding") == null) {
-//   location.href = "onboarding/";
-// }
+if (localStorage.getItem("onboarding") == null) {
+  location.href = "onboarding/";
+}
 
 let UserName = localStorage.getItem("name");
 let backgroundURL = localStorage.getItem("backgroundURL");

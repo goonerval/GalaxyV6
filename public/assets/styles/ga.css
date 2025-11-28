@@ -298,6 +298,8 @@ body {
   height: 100%;
   z-index: -1;
   border: none;
+  opacity: 0;
+  background-color: #b1b1b1;
 }
 
 #goBackBtn {

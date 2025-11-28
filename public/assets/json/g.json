@@ -1,14 +1,39 @@
 [
   {
-    "name": "Minecraft 1.3",
-    "url": "https://lite.3kh0.net/projects/minecraft/",
+    "name": "Minecraft 1.8",
+    "file": "/assets/g/17.html",
     "image": "17.png",
     "genre": "Multiplayer / Open World"
+  },
+  {
+    "name": "Steal a Brainrot",
+    "url": "https://files.twoplayergames.org/files/games/g1/steal-brainrot-duel-v6/index.html",
+    "image": "74.png",
+    "genre": "Multiplayer / Incremental",
+    "type": "UV"
+  },
+  {
+    "name": "Grand Extreme Racing",
+    "url": "https://html5.gamedistribution.com/e45f235cab494f3e901b632e7a94ee5b/?gd_sdk_referrer_url=https%3A%2F%2F",
+    "image": "76.png",
+    "genre": "Racing"
+  },
+  {
+    "name": "Highway Traffic",
+    "url": "https://html5.gamedistribution.com/rvvASMiM/7c151f5e29eb40a591edfe1823e1d0ea/index.html?gd_sdk_referrer_url=https%3A%2F%2Fgamedistribution.com%2Fgames%2Fhighway-traffic%2F&gd_zone_config=eyJwYXJlbnRVUkwiOiJodHRwczovL2h0bWw1LmdhbWVkaXN0cmlidXRpb24uY29tLzdjMTUxZjVlMjllYjQwYTU5MWVkZmUxODIzZTFkMGVhLz9nZF9zZGtfcmVmZXJyZXJfdXJsPWh0dHBzOi8vZ2FtZWRpc3RyaWJ1dGlvbi5jb20vZ2FtZXMvaGlnaHdheS10cmFmZmljLyIsInBhcmVudERvbWFpbiI6ImdhbWVkaXN0cmlidXRpb24uY29tIiwidG9wRG9tYWluIjoiZ2FtZWRpc3RyaWJ1dGlvbi5jb20iLCJoYXNJbXByZXNzaW9uIjpmYWxzZSwibG9hZGVyRW5hYmxlZCI6dHJ1ZSwiaG9zdCI6Imh0bWw1LmdhbWVkaXN0cmlidXRpb24uY29tIiwidmVyc2lvbiI6IjEuNS4xOCJ9",
+    "image": "77.png",
+    "genre": "Racing"
   },
   {
     "name": "Cookie Clicker",
     "file": "/assets/g/11.html",
     "image": "11.png",
+    "genre": "Incremental"
+  },
+  {
+    "name": "Snow Rider 3D",
+    "file": "/assets/g/75.html",
+    "image": "75.png",
     "genre": "Incremental"
   },
   {

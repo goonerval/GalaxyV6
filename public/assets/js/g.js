@@ -95,6 +95,7 @@ function renderGames(games) {
           var ute = game.url;
           openApp(ute, xt);
           iframe.style.zIndex = "1";
+          iframe.style.opacity = "1";
           document.documentElement.style.overflow = "hidden";
           const goBackBtn = document.getElementById("goBackBtn");
           goBackBtn.style.top = "20px";
@@ -103,11 +104,14 @@ function renderGames(games) {
             iframe.src = "";
             document.documentElement.style.overflow = "";
             goBackBtn.style.top = "-80px";
+            iframe.style.opacity = "0";
           });
         } else if (game.file) {
           var fil = game.file;
           iframe.style.zIndex = "9998";
           iframe.src = fil;
+          iframe.style.opacity = "1";
+
           document.documentElement.style.overflow = "hidden";
           const goBackBtn = document.getElementById("goBackBtn");
           goBackBtn.style.top = "20px";
@@ -116,6 +120,7 @@ function renderGames(games) {
             iframe.src = "";
             document.documentElement.style.overflow = "";
             goBackBtn.style.top = "-80px";
+            iframe.style.opacity = "0";
           });
         }
       });
