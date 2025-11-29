@@ -1,4 +1,4 @@
-body{
+body {
   background: transparent;
   -webkit-backdrop-filter: blur(22px) saturate(180%);
   display: flex;
@@ -8,7 +8,7 @@ body{
   height: 100%;
 }
 .blur {
-    background: var(--glassmorphismBG);
+  background: var(--glassmorphismBG);
   backdrop-filter: blur(10px);
   margin: 0;
   position: fixed;
@@ -20,7 +20,8 @@ body{
 }
 .card {
 }
-h1, p {
+h1,
+p {
   font-family: nunito;
 }
 .divider {
@@ -35,10 +36,9 @@ pre {
   font-size: 13px;
 }
 .updateInfo {
-width: 100%;
+  width: 100%;
 }
 .dividerSmall {
   width: 40%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.379);
-
 }
