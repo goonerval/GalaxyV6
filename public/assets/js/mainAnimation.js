@@ -147,11 +147,11 @@ function openWindow(
     focusCurrentWindow();
 
     windowEl.style.transition = "0s";
-    if (windowEl.classList.contains("snapped")) {
+    if (windowEl.classList.contains("snapped") || (windowEl.style.height == "100%" && windowEl.style.width == "100%")) {
       console.log("restoring");
       windowEl.classList.remove("snapped");
-      windowEl.style.width = "900px";
-      windowEl.style.height = "500px";
+      windowEl.style.width = "45%";
+      windowEl.style.height = "45%";
       allIframes.forEach((f) => (f.style.pointerEvents = "none"));
 
       windowEl.style.transition = "0s";
@@ -206,7 +206,7 @@ function openWindow(
       const maxY = window.innerHeight - navBarHeight - windowEl.offsetHeight;
 
       windowEl.style.left = Math.max(0, Math.min(newX, maxX)) + "px";
-      windowEl.style.top = Math.max(0, Math.min(newY, maxY)) + "px";
+      windowEl.style.top = Math.max(25, Math.min(newY, maxY)) + "px";
 
       const snapMargin = 100;
       snapTarget = null;
@@ -286,8 +286,8 @@ function openWindow(
         let newT = startT + dy;
         let newH = startH - dy;
 
-        if (newT < 0) {
-          newT = 0;
+        if (newT < 25) {
+          newT = 25;
           newH = startH + startT;
         }
 
@@ -312,15 +312,15 @@ function openWindow(
       windowEl.style.left = "0px";
       windowEl.style.top = "0px";
       windowEl.style.width = "50vw";
-      windowEl.style.height = "calc(100% - 40px)";
+      windowEl.style.height = "calc(100% - 52px)";
     } else if (snapTarget === "right") {
       windowEl.classList.add("snapped");
       snapRight.classList.remove("snap-active");
       windowEl.style.transition = "all 0.25s ease";
       windowEl.style.left = "50vw";
-      windowEl.style.top = "0px";
+      windowEl.style.top = "23px";
       windowEl.style.width = "50vw";
-      windowEl.style.height = "calc(100% - 40px)";
+      windowEl.style.height = "calc(100% - 52px)";
     }
     snapTarget = null;
     snapLeft.classList.remove("snap-active");
@@ -344,7 +344,7 @@ function openWindow(
       windowEl.style.left = "0px";
       windowEl.style.top = "0px";
       windowEl.style.width = "100%";
-      windowEl.style.height = "calc(100% - 40px)";
+      windowEl.style.height = "calc(100% - 51px)";
     } else {
       squares.style.display = "none";
       square.style.display = "flex";
@@ -352,8 +352,8 @@ function openWindow(
 
       windowEl.style.left = "500px";
       windowEl.style.top = "200px";
-      windowEl.style.width = "900px";
-      windowEl.style.height = "500px";
+      windowEl.style.width = "45%";
+      windowEl.style.height = "45%";
     }
   }
 
@@ -416,12 +416,6 @@ function openWindow(
       preview.remove();
     });
   }
-      if (windowEl.style.height == "100%" && windowEl.style.width == "100%") {
-      changeIcon();
-      console.log("100%")
-    }
-
-
 }
 const currentSiteUrl = window.location.href + "?redirect=true";
 function launchBlob() {
@@ -562,3 +556,10 @@ function imacEffect() {
 }
 
 imacEffect();
+function updateTime() {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString(); 
+  document.getElementById('timeDisplay').textContent = timeString;
+}
+setInterval(updateTime, 1000);
+updateTime(); 

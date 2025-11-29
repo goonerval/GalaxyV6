@@ -388,6 +388,7 @@ p {
   flex-wrap: wrap;
   overflow: hidden;
   margin-bottom: 2rem;
+  gap: 20px;
  }
 
 .pinned-separator {

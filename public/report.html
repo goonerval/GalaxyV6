@@ -1,8 +1,10 @@
 <form id="bugForm">
-  <label for="bug">What's your name?</label><br />
-  <textarea id="name" name="name" rows="4" cols="50"></textarea><br />
+  <label for="name">What's your name?</label><br />
+  <textarea id="name" name="name" rows="2" cols="50"></textarea><br />
+
   <label for="bug">Describe the request/bug:</label><br />
   <textarea id="bug" name="bug" rows="4" cols="50"></textarea><br />
+
   <button type="submit" id="submitBtn">Submit Report</button>
 </form>
 
@@ -10,9 +12,6 @@
 <div id="failed"></div>
 
 <script type="module">
-  const webhookURL =
-    "https://discord.com/api/webhooks/1444188888372346985/R7xwaZLEI7kVMd7d_FUZ6Y4Y6fB-L8uLAcLXvxiXXy3T0Ta4NVCstfp-gK4Ejj4OrwTO";
-
   const form = document.getElementById("bugForm");
   const submitBtn = document.getElementById("submitBtn");
 
@@ -21,34 +20,19 @@
     const bugText = document.getElementById("bug").value;
     const userName = document.getElementById("name").value;
 
-    // Disable button for cooldown
     submitBtn.disabled = true;
     submitBtn.innerText = "Please wait 15s...";
 
     try {
-      const response = await fetch(webhookURL, {
+      const response = await fetch("/report-bug", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          content: `# New Bug Report!`,
-          embeds: [
-            {
-              title: "Bug Report",
-              type: "rich",
-              color: 0xff0000,
-              fields: [
-                { name: "Reporter", value: userName, inline: true },
-                { name: "Description", value: bugText },
-              ],
-              footer: { text: "Galaxy Bug Report" },
-              timestamp: new Date().toISOString(),
-            },
-          ],
-        }),
+        body: JSON.stringify({ name: userName, bug: bugText }),
       });
 
       if (response.ok) {
-        document.getElementById("sent").innerText = "Bug report sent! \n You can view your report on https://tinyurl.com/galaxyiscool";
+        document.getElementById("sent").innerText =
+          "Bug report sent! You can view your report on https://tinyurl.com/galaxyiscool";
         document.getElementById("failed").innerText = "";
       } else {
         document.getElementById("failed").innerText =
@@ -60,13 +44,14 @@
       document.getElementById("sent").innerText = "";
     }
 
-    // Re-enable button after 30 seconds
+    // Re-enable button after 15 
     setTimeout(() => {
       submitBtn.disabled = false;
-      submitBtn.innerText = "Submit Bug Report";
+      submitBtn.innerText = "Submit Report";
     }, 15000);
   });
 </script>
+
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -127,6 +112,7 @@
     font-weight: bold;
     color: #2a9d8f;
   }
+
   #failed {
     margin-top: 20px;
     font-weight: bold;

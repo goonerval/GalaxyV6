@@ -138,3 +138,40 @@ fastify.listen({ port: PORT, host: HOST }, (err) => {
     console.log(`\thttp://${address.address}:${address.port}`);
   }
 });
+import dotenv from "dotenv";
+dotenv.config();
+const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+fastify.post("/report-bug", async (req, reply) => {
+  const { name, bug } = req.body;
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        content: `# New Bug Report!`,
+        embeds: [
+          {
+            title: "Bug Report",
+            type: "rich",
+            color: 0xff0000,
+            fields: [
+              { name: "Reporter", value: name, inline: true },
+              { name: "Description", value: bug },
+            ],
+            footer: { text: "Galaxy Bug Report" },
+            timestamp: new Date().toISOString(),
+          },
+        ],
+      }),
+    });
+
+    if (response.ok) {
+      return reply.send({ status: "ok" });
+    } else {
+      return reply.code(500).send({ error: "Failed to send bug report" });
+    }
+  } catch (err) {
+    return reply.code(500).send({ error: err.message });
+  }
+});
