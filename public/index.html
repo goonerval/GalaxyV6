@@ -79,17 +79,19 @@
     <div id="snap-right" class="snap-preview"></div>
   </body>
   <script>
-    const latestVersion = "6.1";
+    const latestVersion = "6.2";
     const storedVersion = localStorage.getItem("galaxyVersion");
     function update() {
       let updateDiv = document.getElementById("update");
       updateDiv.style.display = "flex";
+      localStorage.setItem("galaxyVersion", 0);
     }
     function checkVersion() {
-      if (storedVersion !== latestVersion) {
-        update();
+      if (storedVersion == 0) {
         openWindow("updates.html", "0%", "20px  ", "60%", "30%");
         localStorage.setItem("galaxyVersion", latestVersion);
+      } else if (storedVersion !== latestVersion) {
+        update();
       }
     }
   </script>

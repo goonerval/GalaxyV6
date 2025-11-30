@@ -489,9 +489,7 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  display: none;
-}
-.update h1, .update h2 {
   color: white;
   font-family: Arial, Helvetica, sans-serif;
+  display: none;
 }
