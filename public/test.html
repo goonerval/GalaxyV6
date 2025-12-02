@@ -1,795 +1,346 @@
 <!DOCTYPE html>
+<html>
+	<head>
+		<title>The Buyables</title>
+		
+		<style>
+			#main {
+				text-align: center;
+				background-color: black;
+				color: white;
+			    position: absolute;
+			    top: 0px;
+			    bottom: 0px;
+			    left: 0px;
+			    right: 0px;
+			    overflow: visible;
+				font-weight: bold;
+				font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+			}
 
-<!-- Ultimate Game Stash file--> 
-<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
+			button {
+				height: 100px;
+			    width: 200px;
+			    background-color: black;
+			    border-width: 3px;
+			    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+			    color: white;
+			    border-color: white;
+			    border-radius: 1em;
+				border-style: groove;
+				overflow: scroll;
+				vertical-align: top;
+				margin-bottom: 4px;
+			}
 
+			#dev {
+				border-color: blueviolet;
+				color: violet;
+			}
+		</style>
+		
+		<!-- <link rel="stylesheet" href="style.css">
 
-<html lang="en-us">
-<head>
-<meta charset="utf-8"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bubbls/3dash@76613c9a94533ef9e6ba0e266ae18613700e3d02/style.css"/>
-<!-- Yandex Games SDK -->
-<script src="https://cdn.jsdelivr.net/gh/bubbls/3dash@76613c9a94533ef9e6ba0e266ae18613700e3d02/v2.02c5b63d689c6bc2f83c.js"></script>
-<style>
-        /* Убираем выделение по нажатию клавиш */
-        canvas:focus {
-            outline: none;
-        }
-
-        html, body {
-            /* Убираем отступы */
-            padding: 0;
-            margin: 0;
-            /* Отключаем скролл и лонгтап на IOS */
-            overflow: hidden;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-tap-highlight-color: rgba(0,0,0,0);
-            /* Ставим высоту на 100% */
-            height: 100%;
-        }
-    </style>
-<!-- Additional head modules -->
-</head>
-<body class="dark">
-<div id="unity-container" class="unity-desktop">
-<canvas id="unity-canvas" tabindex="-1"></canvas>
-</div>
-<div id="loading-cover" style="display:none;">
-<div id="unity-loading-bar">
-<div id="unity-logo"><img src=""/></div>
-<div id="unity-progress-bar-empty" style="display: none;">
-<div id="unity-progress-bar-full"></div>
-</div>
-<div class="spinner"></div>
-</div>
-</div>
-<!-- Additional body modules -->
-<script>
-        const hideFullScreenButton = "";
-        const buildUrl = "";
-        const loaderUrl = buildUrl + "https://cdn.jsdelivr.net/gh/bubbls/3dash@76613c9a94533ef9e6ba0e266ae18613700e3d02/Build/GeometryDash.loader.js";
-        const config = {
-            dataUrl: buildUrl + "https://cdn.jsdelivr.net/gh/bubbls/3dash@76613c9a94533ef9e6ba0e266ae18613700e3d02/Build/GeometryDash.data.unityweb",
-            frameworkUrl: buildUrl + "https://cdn.jsdelivr.net/gh/bubbls/3dash@76613c9a94533ef9e6ba0e266ae18613700e3d02/Build/GeometryDash.framework.js.unityweb",
-            codeUrl: buildUrl + "https://cdn.jsdelivr.net/gh/bubbls/3dash@76613c9a94533ef9e6ba0e266ae18613700e3d02/Build/GeometryDash.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-            companyName: "DefaultCompany",
-            productName: "GeometryDash3d",
-            productVersion: "0.1"
-        };
-
-        const container = document.querySelector("#unity-container");
-        const canvas = document.querySelector("#unity-canvas");
-        const loadingCover = document.querySelector("#loading-cover");
-        const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
-        const progressBarFull = document.querySelector("#unity-progress-bar-full");
-        const spinner = document.querySelector('.spinner');
-
-        const canFullscreen = (function () {
-            for (const key of [
-                'exitFullscreen',
-                'webkitExitFullscreen',
-                'webkitCancelFullScreen',
-                'mozCancelFullScreen',
-                'msExitFullscreen',
-            ]) {
-                if (key in document) {
-                    return true;
-                }
-            }
-            return false;
-        }());
-
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            container.className = "unity-mobile";
-            
-        }
-
-        // Фоновое изображение при загрузке игры. При сборке билда код меняется взависимости от настроек проекта.
-        
-        loadingCover.style.background = "url('https://cdn.jsdelivr.net/gh/bubbls/3dash@76613c9a94533ef9e6ba0e266ae18613700e3d02/logo.png') center / cover";
-
-        loadingCover.style.display = "";
-
-        // Выключаем появление меню при правом клике мыши
-        document.addEventListener('contextmenu', event => event.preventDefault());
-
-        // Возвращаем фокус, если кликнули по экрану
-        function FocusGame() {
-            window.focus();
-            canvas.focus();
-        }
-
-        window.addEventListener('pointerdown', () => {
-            FocusGame();
-        });
-        window.addEventListener('touchstart', () => {
-            FocusGame();
-        });
-
-        let StartUnityInstance;
-        let myGameInstance = null;
-        let ysdk = null;
-        let player = null;
-        let leaderboard;
-        let payments = null;
-        let initGame = false;
-        let nowFullAdOpen = false;
-
-        const script = document.createElement("script");
-        script.src = loaderUrl;
-        script.onload = () => {
-            StartUnityInstance = function () {
-                createUnityInstance(canvas, config, (progress) => {
-                    spinner.style.display = "none";
-                    progressBarEmpty.style.display = "";
-                    progressBarFull.style.width = `${100 * progress}%`;
-                }).then((unityInstance) => {
-                    myGameInstance = unityInstance;
-                    loadingCover.style.display = "none";
-                }).catch((message) => {
-                    console.error(message);
-                });
-            };
-            if (LocalHost())
-                StartUnityInstance_IfUnloaded();
-        };
-
-        function StartUnityInstance_IfUnloaded() {
-            if (spinner.style.display !== "none")
-                StartUnityInstance();
-        }
-
-        function LocalHost() {
-            var host = window.location.hostname;
-            if (host == "localhost" || host == "127.0.0.1")
-                return true;
-            else return false;
-        }
-
-        setTimeout(StartUnityInstance_IfUnloaded, 5000);
-
-        InitYSDK();
-        async function InitYSDK() {
-            try {
-                if (LocalHost()) return;
-
-                console.log('Init Yandex SDK');
-                ysdk = await YaGames.init();
-
-                FullAdShow(); // First ad true
-
-                // Additional init modules
-cloudSaves = await LoadCloud();
-console.log('Init Storage ysdk');
-
-paymentsData = await GetPayments();
-console.log('Init Payments ysdk');
-
-environmentData = await RequestingEnvironmentData();
-console.log('Init Envir ysdk');
-
-playerData = await InitPlayer();
-console.log('Init Player ysdk');
+		<script src="JS/buyables.js"></script>
+		<script src="JS/variables.js"></script>-->
+	</head>
+	<body>
+		<div id="main">
+			<p id="stuffCounter">You have 0 points</p>
+			<p id="pPS">(+1)</p>
+			<button class="one" type="button" onclick="B1()" id="B1"><b>Buyable 1;1</b><br> Cost: 5 points<br>Multiply Base Point Gain by 1.5</button>
+			<button class="one" type="button" onclick="B2()" id="B2"><b>Buyable 1;2</b><br> Cost: 100 points<br>Divide Buyable 1;1 cost by 2</button>
+			<button class="one" type="button" onclick="B3()" id="B3" ><b>Buyable 1;3</b><br> Cost: 360 points<br>The Buyable 1;1 cost scaling increases slower<br>Currently: x3.5</button>
+			<br>
+			<button class="two" type="button" onclick="B4()" id="B4"><b>Buyable 2;1</b><br> Cost: 500 points<br>Bring Point Gain to the power of 1.2</button>
+			<button class="two" type="button" onclick="B5()" id="B5"><b>Buyable 2;2</b><br> Cost: 1000 points<br>Buyable 1;1 is 1.01x more effective</button>
+			<button class="two" type="button" onclick="B6()" id="B6"><b>Buyable 2;3</b><br> Cost: N/A points<br>Divide Buyable 2;1 cost by 10</button>
+			<br>
+			<button id="dev" onclick="Dev()">Dev<br><i>Multiply current points by ten</i></button>
+		</div>
+		
+		<script>
 
 
-            } catch (e) {
-                console.error('CRASH Initialization SDK: ', e);
-            }
+var points = 0;
+var pointsD = 0;
+var pPS = 1;
+var pPSD = 1;
+var pointsCap = 1e+10;
 
-            StartUnityInstance_IfUnloaded();
-        }
+var B1_Cost = 5;
+var B1_CostScale = 3.5;
+var B1_CostD = B1_Cost;
+var B1_Pow = 1.5;
+var B1_TimesBought = 0;
+var B2_Cost = 100;
+var B2_CostD = B2_Cost;
+var B2_TimesBought = 0;
+var B3_Cost = 360;
+var B3_CostD = B3_Cost;
+var B4_Cost = 500;
+var B4_CostD = B4_Cost;
+var B4_TimesBought = 0;
+var B5_Cost = 1000;
+var B5_CostD = B5_Cost;
+var B5_TimesBought = 0;
+var B6_Cost = NaN;
+var B6_CostD = NaN;
 
-        function InitGame() {
-            console.log('Init Game Success');
-            initGame = true;
+var points = document.getElementById("stuffCounter");
+var B1_1 = document.getElementById("B1");
+var	B1_2 = document.getElementById("B2");
+var	B1_3 = document.getElementById("B3");
+var B2_1 = document.getElementById("B4");
+var B2_2 = document.getElementById("B5");
+var B2_3 = document.getElementById("B6");
+var ten = document.getElementById("dev");
 
-            if (nowFullAdOpen == true && myGameInstance != null) {
-                myGameInstance.SendMessage('YandexGame', 'OpenFullAd');
-            }
 
-            // Additional start modules
-        }
+var timer = setInterval(gameTick, 1000);
 
-        function FullAdShow() {
-            try {
-                if (nowFullAdOpen !== true && ysdk !== null) {
-                    ysdk.adv.showFullscreenAdv(
-                        {
-                            callbacks: {
-                                onOpen: () => {
-                                    console.log('Open Ad Interstitial');
-                                    nowFullAdOpen = true;
-                                    if (initGame === true) {
-                                        myGameInstance.SendMessage('YandexGame', 'OpenFullAd');
-                                    }
-                                },
-                                onClose: (wasShown) => {
-                                    nowFullAdOpen = false;
-                                    if (initGame === true) {
-                                        if (wasShown) {
-                                            myGameInstance.SendMessage('YandexGame', 'CloseFullAd', 'true');
-                                        }
-                                        else {
-                                            myGameInstance.SendMessage('YandexGame', 'CloseFullAd', 'false');
-                                        }
-                                    }
-                                    FocusGame();
-                                },
-                                onError: (error) => {
-                                    console.error('Error Ad Interstitial', error);
-                                    myGameInstance.SendMessage('YandexGame', 'ErrorFullAd');
-                                    FocusGame();
-                                }
-                            }
-                        });
-                }
-            }
-            catch (e) {
-                console.error('CRASH FullAd Show: ', e.message);
-            }
-        }
+function gameTick() {
+	points += pPS;
+	if (points > pointsCap) {
+		points = pointsCap;
+	}
 
-        function RewardedShow(id) {
-            try {
-                ysdk.adv.showRewardedVideo(
-                    {
-                        callbacks:
-                        {
-                            onOpen: () => {
-                                console.log('Opened Video Ad. Id: ' + id);
-                                myGameInstance.SendMessage('YandexGame', 'OpenVideo');
-                            },
-                            onClose: () => {
-                                console.log('Closed Video Ad. Id: ' + id);
-                                myGameInstance.SendMessage('YandexGame', 'CloseVideo');
-                                FocusGame();
-                            },
-                            onRewarded: () => {
-                                console.log('Reward Video Ad. Id: ' + id);
-                                myGameInstance.SendMessage('YandexGame', 'RewardVideo', id);
-                            },
-                            onError: (e) => {
-                                console.error('Error Video Ad. Id: ' + id, e);
-                                myGameInstance.SendMessage('YandexGame', 'ErrorVideo');
-                            }
-                        }
-                    });
-            } catch (err) {
-                console.error('CRASH Rewarded Video Ad Show: ', err.message);
-            }
-        }
+	pPSD = pPS;
+	if (pPSD > 999999) {pPSD = pPS.toExponential(2);}
 
-        function StickyAdActivity(show) {
-            try {
-                ysdk.adv.getBannerAdvStatus().then(({ stickyAdvIsShowing, reason }) => {
-                    if (stickyAdvIsShowing) {
-                        if (!show) {
-                            ysdk.adv.hideBannerAdv();
-                        }
-                    }
-                    else if (reason) {
-                        console.log('Sticky ad are not shown. Reason:', reason);
-                    }
-                    else if (show) {
-                        ysdk.adv.showBannerAdv();
-                    }
-                })
-            } catch (e) {
-                console.error('CRASH Sticky Activity: ', e.message);
-            }
-        }
+	pointsD = Math.floor(points);
+	if (points > 999999) {pointsD = points.toExponential(2);}
 
-        function InitLeaderboard() {
-            try {
-                ysdk.getLeaderboards().then(_lb => {
-                    leaderboard = _lb
-                    myGameInstance.SendMessage('YandexGame', 'InitializedLB');
-                });
-            } catch (e) {
-                console.error('CRASH Init Leaderboard: ', e.message);
-            }
-        }
+	document.getElementById("stuffCounter").innerHTML = "You have " + points + " points"
+	
+	ten.style = "color: violet; border-color: blueviolet;" //aka "dev"
 
-        function SetLeaderboardScores(_name, score) {
-            try {
-                ysdk.getLeaderboards()
-                    .then(leaderboard => {
-                        leaderboard.setLeaderboardScore(_name, score);
-                    });
-            } catch (e) {
-                console.error('CRASH Set Leader board Scores: ', e.message);
-            }
-        }
-
-        function GetLeaderboardScores(nameLB, maxPlayers, quantityTop, quantityAround, photoSize, auth) {
-            try {
-                var jsonEntries = {
-                    technoName: '',
-                    isDefault: false,
-                    isInvertSortOrder: false,
-                    decimalOffset: 0,
-                    type: '' // , title: ''
-                };
-
-                ysdk.getLeaderboards()
-                    .then(leaderboard => leaderboard.getLeaderboardDescription(nameLB))
-                    .then(res => {
-                        jsonEntries.technoName = nameLB;
-                        jsonEntries.isDefault = res.default;
-                        jsonEntries.isInvertSortOrder = res.description.invert_sort_order;
-                        jsonEntries.decimalOffset = res.description.score_format.options.decimal_offset;
-                        jsonEntries.type = res.description.type; // Не определяется на момент 18.07.23
-                        //jsonEntries.title = res.title; // Реализуйте по предпочтениям
-
-                        return leaderboard.getLeaderboardEntries(nameLB, {
-                            quantityTop: quantityTop,
-                            includeUser: auth,
-                            quantityAround: quantityAround
-                        });
-                    })
-                    .then(res => {
-                        let jsonPlayers = EntriesLB(res, maxPlayers, photoSize);
-                        let combinedJson = { ...jsonEntries, ...jsonPlayers };
-
-                        myGameInstance.SendMessage('YandexGame', 'LeaderboardEntries', JSON.stringify(combinedJson));
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-            }
-            catch (e) {
-                console.error('CRASH Get Leaderboard: ', e.message);
-            }
-        }
-
-        function EntriesLB(res, maxPlayers, photoSize) {
-            let LeaderboardEntriesText = '';
-            let playersCount;
-
-            if (res.entries.length < maxPlayers) {
-                playersCount = res.entries.length;
-            } else {
-                playersCount = maxPlayers;
-            }
-
-            let ranks = new Array(playersCount);
-            let photos = new Array(playersCount);
-            let mames = new Array(playersCount);
-            let scores = new Array(playersCount);
-            let uniqueIDs = new Array(playersCount);
-
-            for (i = 0; i < playersCount; i++) {
-                ranks[i] = res.entries[i].rank;
-                scores[i] = res.entries[i].score;
-                uniqueIDs[i] = res.entries[i].player.uniqueID;
-
-                if (photoSize === 'nonePhoto' || res.entries[i].player.scopePermissions.avatar !== "allow") {
-                    photos[i] = 'nonePhoto';
-                } else {
-                    photos[i] = res.entries[i].player.getAvatarSrc(photoSize);
-                }
-
-                if (res.entries[i].player.scopePermissions.public_name !== "allow") {
-                    mames[i] = "anonymous";
-                } else {
-                    mames[i] = res.entries[i].player.publicName;
-                }
-
-                LeaderboardEntriesText += ranks[i] + '. ' + mames[i] + ": " + scores[i] + '\n';
-            }
-
-            if (playersCount === 0) {
-                LeaderboardEntriesText = 'no data';
-            }
-
-            let jsonPlayers = {
-                "entries": LeaderboardEntriesText,
-                "ranks": ranks,
-                "photos": photos,
-                "names": mames,
-                "scores": scores,
-                "uniqueIDs": uniqueIDs
-            };
-
-            return jsonPlayers;
-        }
-
-        function Review() {
-            try {
-                ysdk.feedback.canReview()
-                    .then(({ value, reason }) => {
-                        if (value) {
-                            ysdk.feedback.requestReview().then(({ feedbackSent }) => {
-                                console.log('feedbackSent ', feedbackSent);
-                                if (feedbackSent) {
-                                    myGameInstance.SendMessage('YandexGame', 'ReviewSent', 'true');
-                                    console.log('Review left')
-                                }
-                                else {
-                                    myGameInstance.SendMessage('YandexGame', 'ReviewSent', 'false');
-                                    console.log('Review not left', reason)
-                                }
-                                FocusGame();
-                            })
-                        }
-                        else {
-                            console.log('Review can show = false', reason);
-                            FocusGame();
-                        }
-                    })
-            } catch (e) {
-                console.error('CRASH Review: ', e.message);
-                FocusGame();
-            }
-        }
-
-        function PromptShow() {
-            try {
-                ysdk.shortcut.showPrompt()
-                    .then(result => {
-                        console.log('Shortcut created?:', result);
-                        if (result.outcome === 'accepted') {
-                            console.log('Prompt Success');
-                            myGameInstance.SendMessage('YandexGame', 'OnPromptSuccess');
-                        }
-                        else {
-                            myGameInstance.SendMessage('YandexGame', 'OnPromptFail');
-                        }
-                        FocusGame();
-                    });
-            } catch (e) {
-                console.error('CRASH Prompt Show: ', e.message);
-                FocusGame();
-            }
-        }
-
-        // Additional script modules:
-
-var cloudSaves = 'noData';
-
-function SaveCloud(jsonData, flush) {
-    if (player == null) {
-        console.error('CRASH Save Cloud: ', 'Didnt have time to load');
-        return;
-    }
-    try {
-        player.setData({
-            saves: [jsonData],
-        }, flush);
-    } catch (e) {
-        console.error('CRASH Save Cloud: ', e.message);
-    }
+	color();
+	secondPassed();
 }
 
-function LoadCloud(sendback) {
-    return new Promise((resolve) => {
-        if (ysdk == null) {
-            if (sendback)
-                myGameInstance.SendMessage('YandexGame', 'SetLoadSaves', 'noData');
-            resolve('noData');
-            return;
-        }
-        try {
-            ysdk.getPlayer({ scopes: false })
-                .then(_player => {
-                    _player.getData(["saves"]).then(data => {
-                        if (data.saves) {
-                            if (sendback)
-                                myGameInstance.SendMessage('YandexGame', 'SetLoadSaves', JSON.stringify(data.saves));
-                            resolve(JSON.stringify(data.saves));
-                        } else {
-                            if (sendback)
-                                myGameInstance.SendMessage('YandexGame', 'SetLoadSaves', 'noData');
-                            resolve('noData');
-                        }
-                    }).catch(() => {
-                        console.error('Load Cloud Error!');
-                        if (sendback)
-                            myGameInstance.SendMessage('YandexGame', 'SetLoadSaves', 'noData');
-                        resolve('noData');
-                    });
-                }).catch(e => {
-                    console.error('Load Cloud Error!', e.message);
-                    if (sendback)
-                        myGameInstance.SendMessage('YandexGame', 'SetLoadSaves', 'noData');
-                    resolve('noData');
-                });
-        }
-        catch (e) {
-            console.error('CRASH Load saves Cloud: ', e.message);
-            if (sendback)
-                myGameInstance.SendMessage('YandexGame', 'SetLoadSaves', 'noData');
-            resolve('noData');
-        }
-    });
+function color() {
+	points.style = "color: green"
+	B1_1.style = "border-color: white;"
+	B1_2.style = "border-color: white;"
+	B1_3.style = "border-color: lime; color: lime;"; if (B3_Cost > points+1 && B1_CostScale > 1.5) {B1_3.style = "color: white;"}
+	B2_1.style = "border-color: white;"
+	B2_2.style = "border-color: white;"
+	B2_3.style = "border-color: white;"
+
+	if (points == pointsCap) {points.style = "color: red"}
+	if (B1_Cost < points+1) {B1_1.style = "border-color: lime;"}
+	if (B2_Cost < points+1) {B1_2.style = "border-color: lime;"}
+	if (B3_Cost < points+1 && B1_CostScale > 1.5) {B1_3.style = "border-color: lime; color: white;"}
+	if (B4_Cost < points+1) {B2_1.style = "border-color: lime;"}
+	if (B5_Cost < points+1) {B2_2.style = "border-color: lime;"}
+	if (B6_Cost < points+1) {B2_3.style = "border-color: lime;"}
+}
+			
+function B1() {
+	if (points > (B1_Cost - 1)) {
+		B1_TimesBought += 1;
+		points -= B1_Cost;
+
+		if (B1_Cost > points+1) {B1_1.style = "border-color: white;"}
+		if (B2_Cost > points+1) {B1_2.style = "border-color: white;"}
+		if (B3_Cost > points+1 && B1_CostScale > 1.5) {B1_3.style = "border-color: white;"}
+		if (B4_Cost > points+1) {B2_1.style = "border-color: white;"}
+		if (B5_Cost > points+1) {B2_2.style = "border-color: white;"}
+		if (B6_Cost > points+1) {B2_3.style = "border-color: white;"}
+
+		//pPS = Math.floor(pPS * B1_Pow);
+		pPS = Math.floor(Math.pow(Math.pow(B1_Pow, B1_TimesBought), Math.pow(1.2, B4_TimesBought)));
+		//pPS = Math.floor(Math.pow(B1_TimesBought, ((2 + (0.01 * B5_TimesBought)) * Math.pow(1.2, B4_TimesBought))))
+		B1_Cost = 5 + Math.pow(B1_CostScale, B1_TimesBought)/(Math.pow(2, B2_TimesBought));
+		B1_CostD = Math.floor(B1_Cost);
+		if (B1_Cost > 999999) {
+			B1_CostD = B1_Cost.toExponential(2);
+		}
+		document.getElementById("B1").innerHTML = "<b>Buyable 1;1</b><br> Cost: " + B1_CostD + " points<br>Multiply Base Point Gain by " + B1_Pow
+		document.getElementById("pPS").innerHTML = "(+" + pPSD + ")"
+	}
+}
+			
+function B2() {
+	if (points > (B2_Cost - 1)) {
+		B2_TimesBought += 1;
+		points -= B2_Cost;
+
+		if (B1_Cost > points+1) {B1_1.style = "border-color: white;"}
+		if (B2_Cost > points+1) {B1_2.style = "border-color: white;"}
+		if (B3_Cost > points+1 && B1_CostScale > 1.5) {B1_3.style = "border-color: white;"}
+		if (B4_Cost > points+1) {B2_1.style = "border-color: white;"}
+		if (B5_Cost > points+1) {B2_2.style = "border-color: white;"}
+		if (B6_Cost > points+1) {B2_3.style = "border-color: white;"}
+
+		B1_Cost = 5 + Math.pow(B1_CostScale, B1_TimesBought)/(Math.pow(2, B2_TimesBought));
+		B2_Cost = Math.floor(B2_Cost*10);
+		B1_CostD = Math.floor(B1_Cost);
+		B2_CostD = B2_Cost;
+		if (B1_Cost > 999999) {
+			B1_CostD = B1_Cost.toExponential(2);
+		}
+		if (B2_Cost > 999999) {
+			B2_CostD = B2_Cost.toExponential(2);
+		}
+		document.getElementById("B1").innerHTML = "<b>Buyable 1;1</b><br> Cost: " + B1_CostD + " points<br>Multiply Base Point Gain by " + B1_Pow
+		document.getElementById("B2").innerHTML = "<b>Buyable 1;2</b><br> Cost: " + B2_CostD + " points<br>Divide Buyable 1;1 cost by 2"
+	}
+}
+			
+function B3() {
+	if (points > (B3_Cost - 1)) {
+		points -= B3_Cost
+
+		if (B1_Cost > points+1) {B1_1.style = "border-color: white;"}
+		if (B2_Cost > points+1) {B1_2.style = "border-color: white;"}
+		if (B3_Cost > points+1 && B1_CostScale > 1.5) {B1_3.style = "border-color: white;"}
+		if (B4_Cost > points+1) {B2_1.style = "border-color: white;"}
+		if (B5_Cost > points+1) {B2_2.style = "border-color: white;"}
+		if (B6_Cost > points+1) {B2_3.style = "border-color: white;"}
+		
+		if (B1_CostScale > 1.51) {
+			B1_CostScale = (Math.floor(100 * (B1_CostScale - 0.01))) / 100;
+			B1_Cost = 5 + Math.pow(B1_CostScale, B1_TimesBought)/(Math.pow(2, B2_TimesBought));
+			B3_Cost = Math.floor(B3_Cost * 1.09)
+			B1_CostD = Math.floor(B1_Cost);
+			B3_CostD = B3_Cost;
+			if (B1_Cost > 999999) {
+				B1_CostD = B1_Cost.toExponential(2);
+			}
+			if (B3_Cost > 999999) {
+				B3_CostD = B3_Cost.toExponential(2);
+			}
+			document.getElementById("B1").innerHTML = "<b>Buyable 1;1</b><br> Cost: " + B1_CostD + " points<br>Multiply Base Point Gain by " + B1_Pow
+			document.getElementById("B3").innerHTML = "<b>Buyable 1;3</b><br> Cost: " + B3_CostD + " points<br>The Buyable 1;1 cost scaling increases slower<br>Currently: x" + B1_CostScale
+		} else if (B1_CostScale = 1.51) {
+			B1_CostScale = (Math.floor(100 * (B1_CostScale - 0.01))) / 100;
+			B1_Cost = 5 + Math.pow(B1_CostScale, B1_TimesBought)/(Math.pow(2, B2_TimesBought));
+			B1_CostD = Math.floor(B1_Cost);
+			if (B1_Cost > 999999) {
+				B1_CostD = B1_Cost.toExponential(2);
+			}
+			document.getElementById("B1").innerHTML = "<b>Buyable 1;1</b><br> Cost: " + B1_CostD + " points<br>Multiply Base Point Gain by " + B1_Pow
+			document.getElementById("B3").innerHTML = "<b>Buyable 1;3</b><br> Cost: MAXED<br>The Buyable 1;1 cost scaling increases slower<br>Currently: x" + B1_CostScale
+			B1_3.style = "color: lime; border-color: lime;"
+			B3_Cost = MAX
+		} else {}
+	}
+}
+	
+function B4() {
+	if (points > (B4_Cost - 1)) {
+		B4_TimesBought += 1;
+		points -= B4_Cost
+
+		if (B1_Cost > points+1) {B1_1.style = "border-color: white;"}
+		if (B2_Cost > points+1) {B1_2.style = "border-color: white;"}
+		if (B3_Cost > points+1 && B1_CostScale > 1.5) {B1_3.style = "border-color: white;"}
+		if (B4_Cost > points+1) {B2_1.style = "border-color: white;"}
+		if (B5_Cost > points+1) {B2_2.style = "border-color: white;"}
+		if (B6_Cost > points+1) {B2_3.style = "border-color: white;"}
+		
+		//pPS = Math.floor(Math.pow(pPS, 1.2));
+		pPS = Math.floor(Math.pow(Math.pow(B1_Pow, B1_TimesBought), Math.pow(1.2, B4_TimesBought)));
+		B4_Cost *= 200; 
+		B4_CostD = B4_Cost;
+		if (B4_Cost > 999999) {
+			B4_CostD = B4_Cost.toExponential(2);
+		}
+		document.getElementById("B4").innerHTML = "<b>Buyable 2;1</b><br> Cost: " + B4_CostD + " points<br>Bring Point Gain to the power of 1.2"
+		document.getElementById("pPS").innerHTML = "(+" + pPSD + ")"
+	}
+}
+	
+function B5() {
+	if (points > (B5_Cost - 1)) {
+		B5_TimesBought += 1;
+		points -= B5_Cost;
+
+		if (B1_Cost > points+1) {B1_1.style = "border-color: white;"}
+		if (B2_Cost > points+1) {B1_2.style = "border-color: white;"}
+		if (B3_Cost > points+1 && B1_CostScale > 1.5) {B1_3.style = "border-color: white;"}
+		if (B4_Cost > points+1) {B2_1.style = "border-color: white;"}
+		if (B5_Cost > points+1) {B2_2.style = "border-color: white;"}
+		if (B6_Cost > points+1) {B2_3.style = "border-color: white;"}
+		
+		if (B6_Cost > points+1) {
+			B2_3.style = "border-color: white;"
+		}
+		B1_Pow = (Math.floor(100 * (B1_Pow * 1.01))) / 100;
+		//pPS = Math.floor(Math.pow(B1_Pow, B1_TimesBought));
+		pPS = Math.floor(Math.pow(Math.pow(B1_Pow, B1_TimesBought), Math.pow(1.2, B4_TimesBought)));
+		B5_Cost *= 2
+		B1_CostD = Math.floor(B1_Cost);
+		B5_CostD = B5_Cost;
+		if (B1_Cost > 999999) {
+			B1_CostD = B1_Cost.toExponential(2);
+		}
+		if (B5_Cost > 999999) {
+			B5_CostD = B5_Cost.toExponential(2);
+		}
+		document.getElementById("B5").innerHTML = "<b>Buyable 2;2</b><br> Cost: " + B5_CostD + " points<br>Buyable 1;1 is 1.01x more effective"
+		document.getElementById("B1").innerHTML = "<b>Buyable 1;1</b><br> Cost: " + B1_CostD + " points<br>Multiply Base Point Gain by " + B1_Pow
+		document.getElementById("pPS").innerHTML = "(+" + pPSD + ")"
+	}
 }
 
+function B6() {
+	if (points > (B6_Cost - 1)) {
+		points -= B6_Cost;
 
-var paymentsData = 'none';
-
-function GetPayments(sendback) {
-    return new Promise((resolve) => {
-        try {
-            if (ysdk == null) {
-                resolve('none');
-                return;
-            }
-
-            ysdk.getPayments().then(_payments => {
-                payments = _payments;
-
-                payments.getCatalog()
-                    .then(products => {
-                        let productID = [];
-                        let title = [];
-                        let description = [];
-                        let imageURI = [];
-                        let priceValue = [];
-                        let consumed = [];
-
-                        payments.getPurchases().then(purchases => {
-                            for (let i = 0; i < products.length; i++) {
-                                productID[i] = products[i].id;
-                                title[i] = products[i].title;
-                                description[i] = products[i].description;
-                                imageURI[i] = products[i].imageURI;
-                                priceValue[i] = products[i].priceValue;
-
-                                consumed[i] = true;
-                                for (i2 = 0; i2 < purchases.length; i2++) {
-                                    if (purchases[i2].productID === productID[i]) {
-                                        consumed[i] = false;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            let jsonPayments = {
-                                "id": productID,
-                                "title": title,
-                                "description": description,
-                                "imageURI": imageURI,
-                                "priceValue": priceValue,
-                                "consumed": consumed,
-                                "language": ysdk.environment.i18n.lang
-                            };
-
-                            if (sendback)
-                                myGameInstance.SendMessage('YandexGame', 'PaymentsEntries', JSON.stringify(jsonPayments));
-                            resolve(JSON.stringify(jsonPayments));
-                        });
-                    });
-
-            }).catch(e => {
-                console.log('Purchases are not available', e.message);
-                resolve('none');
-            })
-        } catch (e) {
-            console.error('CRASH Init Payments: ', e.message);
-            resolve('none');
-        }
-    });
+		if (B1_Cost > points+1) {B1_1.style = "border-color: white;"}
+		if (B2_Cost > points+1) {B1_2.style = "border-color: white;"}
+		if (B3_Cost > points+1 && B1_CostScale > 1.5) {B1_3.style = "border-color: white;"}
+		if (B4_Cost > points+1) {B2_1.style = "border-color: white;"}
+		if (B5_Cost > points+1) {B2_2.style = "border-color: white;"}
+		if (B6_Cost > points+1) {B2_3.style = "border-color: white;"}
+		
+		B6_Cost *= 2;
+		B4_Cost /= 10;
+		B4_CostD = B4_Cost;
+		B6_CostD = B6_Cost;
+		if (B4_Cost > 999999) {
+			B4_CostD = B4_Cost.toExponential(2);
+		}
+		if (B6_Cost > 999999) {
+			B6_CostD = B6_Cost.toExponential(2);
+		}
+		document.getElementById("B4").innerHTML = "<b>Buyable 2;1</b><br> Cost: " + B4_CostD + " points<br>Bring Point Gain to the power of 1.2"
+		document.getElementById("B6").innerHTML = "<b>Buyable 2;3</b><br> Cost: " + B6_CostD + " points<br>Divide Buyable 2;1 cost by 10"
+		document.getElementById("pPS").innerHTML = "(+" + pPSD + ")"
+	}
 }
 
-function BuyPayments(id) {
-    try {
-        if (payments != null) {
-            payments.purchase(id).then(() => {
-                console.log('Purchase Success');
-                ConsumePurchase(id);
-                FocusGame();
-            }).catch(e => {
-                console.error('Purchase Failed', e.message);
-                myGameInstance.SendMessage('YandexGame', 'OnPurchaseFailed', id);
-                FocusGame();
-            })
-        } else {
-            console.log('Payments == null');
-        }
-    } catch (e) {
-        console.error('CRASH Buy Payments: ', e.message);
-        FocusGame();
-    }
+var cooldown = 0;
+
+function secondPassed() {
+	if (cooldown > 0) {
+		var minutes = Math.round((cooldown - 30)/60),
+		    remainingSeconds = cooldown % 60;
+		if (remainingSeconds < 10) {
+			remainingSeconds = "0" + remainingSeconds; 						//check for > 0 = :05, else - 0:10
+		}
+		document.getElementById('dev').innerHTML = "<b>[ON COOLDOWN]<br>Dev</b><br><i>Multiply current points by ten</i><br>" + minutes + ":" + remainingSeconds;
+		ten.style = "color: orange; border-color: red;"
+	}
+	if (cooldown == 0) {
+		document.getElementById('dev').innerHTML = "Dev<br><i>Multiply current points by ten</i><br>";
+		clearInterval(countdownTimer);
+		ten.style = "color: violet; border-color: blueviolet;"
+	} else {
+	    cooldown--;
+	}
 }
 
-function ConsumePurchase(id) {
-    try {
-        if (payments != null) {
-            payments.getPurchases().then(purchases => {
-                for (i = 0; i < purchases.length; i++) {
-                    if (purchases[i].productID === id) {
-                        payments.consumePurchase(purchases[i].purchaseToken);
-                        myGameInstance.SendMessage('YandexGame', 'OnPurchaseSuccess', id);
-                    }
-                }
-            });
-        }
-        else console.log('Consume purchase: payments null');
-    } catch (e) {
-        console.error('CRASH Consume Purchase: ', e.message);
-    }
+function Dev() {
+	if (cooldown == 0) {
+		points *= 10;	
+		cooldown = 300;
+	}
+	points *= 10;
 }
-
-function ConsumePurchases() {
-    try {
-        if (payments != null) {
-            payments.getPurchases().then(purchases => {
-                console.log('Unprocessed purchases: ', purchases.length);
-                for (i = 0; i < purchases.length; i++) {
-                    payments.consumePurchase(purchases[i].purchaseToken);
-                    myGameInstance.SendMessage('YandexGame', 'OnPurchaseSuccess', purchases[i].productID);
-                }
-            });
-        }
-        else console.log('Consume purchases: payments null');
-    } catch (e) {
-        console.error('CRASH Consume purchases: ', e.message);
-    }
-}
-
-
-var environmentData = 'null';
-
-function RequestingEnvironmentData(sendback) {
-    return new Promise((resolve) => {
-        if (ysdk == null) {
-            resolve('null');
-            return;
-        }
-        try {
-            var promptCanShow = false;
-            var reviewCanShow = false;
-
-            ysdk.feedback.canReview()
-                .then(({ value }) => {
-                    if (value)
-                        reviewCanShow = true;
-
-                    ysdk.shortcut.canShowPrompt().then(prompt => {
-                        if (prompt.canShow)
-                            promptCanShow = true;
-
-                        var browser = navigator.userAgent;
-                        if (browser.includes('YaBrowser') || browser.includes('YaSearchBrowser'))
-                            browser = 'Yandex';
-                        else if (browser.includes('Opera') || browser.includes('OPR'))
-                            browser = 'Opera';
-                        else if (browser.includes('Firefox'))
-                            browser = 'Firefox';
-                        else if (browser.includes('MSIE'))
-                            browser = 'IE';
-                        else if (browser.includes('Edge'))
-                            browser = 'Edge';
-                        else if (browser.includes('Chrome'))
-                            browser = 'Chrome';
-                        else if (browser.includes('Safari'))
-                            browser = 'Safari';
-                        else
-                            browser = 'Other';
-
-                        let jsonEnvir = {
-                            "language": ysdk.environment.i18n.lang,
-                            "domain": ysdk.environment.i18n.tld,
-                            "deviceType": ysdk.deviceInfo.type,
-                            "isMobile": ysdk.deviceInfo.isMobile(),
-                            "isDesktop": ysdk.deviceInfo.isDesktop(),
-                            "isTablet": ysdk.deviceInfo.isTablet(),
-                            "isTV": ysdk.deviceInfo.isTV(),
-                            "appID": ysdk.environment.app.id,
-                            "browserLang": ysdk.environment.browser.lang,
-                            "payload": ysdk.environment.payload,
-                            "promptCanShow": promptCanShow,
-                            "reviewCanShow": reviewCanShow,
-                            "platform": navigator.platform,
-                            "browser": browser
-                        };
-                        if (sendback)
-                            myGameInstance.SendMessage('YandexGame', 'SetEnvirData', JSON.stringify(jsonEnvir));
-                        resolve(JSON.stringify(jsonEnvir));
-                        console.log("Environment Data: " + JSON.stringify(jsonEnvir));
-                    });
-                });
-        } catch (e) {
-            console.error('CRASH Requesting Environment Data: ', e.message);
-            resolve('null');
-        }
-    });
-}
-
-
-var playerData = 'noData';
-
-function InitPlayer(sendback) {
-    return new Promise((resolve) => {
-        try {
-            if (ysdk == null) {
-                NotAuthorized();
-                if (sendback)
-                    myGameInstance.SendMessage('YandexGame', 'SetInitializationSDK', NotAuthorized());
-                resolve(NotAuthorized());
-            }
-            else {
-                let _scopes = true;
-                ysdk.getPlayer({ scopes: _scopes })
-                    .then(_player => {
-                        player = _player;
-
-                        let playerName = player.getName();
-                        let playerPhoto = player.getPhoto('small');
-
-                        if (!_scopes) {
-                            playerName = "anonymous";
-                            playerPhoto = "null";
-                        }
-
-                        if (player.getMode() === 'lite') {
-
-                            console.log('Not Authorized');
-                            if (sendback)
-                                myGameInstance.SendMessage('YandexGame', 'SetInitializationSDK', NotAuthorized());
-                            resolve(NotAuthorized());
-                        } else {
-                            let authJson = {
-                                "playerAuth": "resolved",
-                                "playerName": playerName,
-                                "playerId": player.getUniqueID(),
-                                "playerPhoto": playerPhoto
-                            };
-                            if (sendback)
-                                myGameInstance.SendMessage('YandexGame', 'SetInitializationSDK', JSON.stringify(authJson));
-                            resolve(JSON.stringify(authJson));
-                        }
-                    }).catch(e => {
-                        console.error('Authorized err: ', e.message);
-                        if (sendback)
-                            myGameInstance.SendMessage('YandexGame', 'SetInitializationSDK', NotAuthorized());
-                        resolve(NotAuthorized());
-                    });
-            }
-        } catch (e) {
-            console.error('CRASH init Player: ', e.message);
-            if (sendback)
-                myGameInstance.SendMessage('YandexGame', 'SetInitializationSDK', NotAuthorized());
-            resolve(NotAuthorized());
-        }
-    });
-}
-
-function NotAuthorized() {
-    let authJson = {
-        "playerAuth": "rejected",
-        "playerName": "unauthorized",
-        "playerId": "unauthorized",
-        "playerPhoto": "null"
-    };
-    return JSON.stringify(authJson);
-}
-
-function OpenAuthDialog() {
-    if (ysdk !== null) {
-        try {
-            ysdk.auth.openAuthDialog().then(() => {
-                InitPlayer(true)
-                    .then(() => {
-                        myGameInstance.SendMessage('YandexGame', 'GetDataInvoke');
-                    });
-            });
-        } catch (e) {
-            console.log('CRASH Open Auth Dialog: ', e.message);
-        }
-    }
-}
-
-
-        document.body.appendChild(script);
-    </script>
-</body>
+		</script>
+	</body>
 </html>
