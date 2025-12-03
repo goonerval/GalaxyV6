@@ -8,7 +8,7 @@ import {
 } from "../../lithium.mjs";
 function launchApp() {
   let appURL = localStorage.getItem("storeAppURL");
-  if (appURL == "https://discord.com/app") {
+  if (appURL == "https://shorturl.at/IG5Dl") {
     openApp(appURL, "UV");
     frame.style.zIndex = "1";
   } else {
