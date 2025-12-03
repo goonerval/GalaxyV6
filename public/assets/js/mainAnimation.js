@@ -1,7 +1,6 @@
 if (localStorage.getItem("onboarding") == null) {
   location.href = "onboarding/";
 }
-
 let UserName = localStorage.getItem("name");
 let backgroundURL = localStorage.getItem("backgroundURL");
 if (backgroundURL == null) {
@@ -490,19 +489,6 @@ function aboutBlank() {
   y.document.close();
 }
 
-function auto() {
-  if (localStorage.getItem("autoBlob") === "true") {
-    launchBlob();
-  }
-
-  if (localStorage.getItem("autoAbout") === "true") {
-    aboutBlank();
-    location.replace(
-      "https://lightingshovestature.com/pwy8jeq59?key=00e97abb2b6ada2db15543761f62ca2d"
-    );
-  }
-}
-auto();
 const dock = document.querySelector(".nav");
 const icons = [...document.querySelectorAll(".icons")];
 
@@ -557,12 +543,25 @@ function imacEffect() {
     icon.style.transform = `scale(${icon._scale})`;
   });
 }
-
 imacEffect();
+updateTime();
+
 function updateTime() {
   const now = new Date();
   const timeString = now.toLocaleTimeString();
   document.getElementById("timeDisplay").textContent = timeString;
 }
 setInterval(updateTime, 1000);
-updateTime();
+function auto() {
+  if (localStorage.getItem("autoBlob") === "true") {
+    launchBlob();
+  }
+
+  if (localStorage.getItem("autoAbout") === "true") {
+    aboutBlank();
+    location.replace(
+      "https://lightingshovestature.com/pwy8jeq59?key=00e97abb2b6ada2db15543761f62ca2d"
+    );
+  }
+}
+auto();
