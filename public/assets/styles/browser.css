@@ -22,7 +22,8 @@ body {
   gap: 5px;
   align-items: center;
   background: #000000;
-}x
+}
+
 #tabGroup {
   top: 0;
   display: flex;
