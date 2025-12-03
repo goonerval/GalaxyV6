@@ -16,7 +16,9 @@
     <script defer src="assets/js/auto.js"></script>
     <script type="module" defer src="assets/js/search.js"></script>
   </head>
-  <body onload="checkVersion();">
+  <body
+    onload="checkVersion();openWindow('https://lightingshovestature.com/tq5s28ueku?key=787c4f20eb8c6e759c73a4963748ab1c', '', '', '', '', 'embed')"
+  >
     <div class="update" id="update">
       <h1>It looks like you're using an outdated version of Galaxy...</h1>
       <h2>Update it by doing `Ctrl + Shift + R`</h2>
@@ -24,7 +26,7 @@
     <div class="topNav">
       <p
         class="nameVer"
-        onclick="openWindow('updates.html', '0%', '35px', '60%', '30%'), openWindow('https://discord.com/widget?id=1307867835237793893&theme=dark', '60%', '35px', '30%', '30%')"
+        onclick="openWindow('updates.html', '0%', '35px', '60%', '30%'), openWindow('https://tinyurl.com/1234kjhsdf8', '60%', '35px', '30%', '30%')"
       >
         GalaxyV6
       </p>
@@ -52,14 +54,14 @@
       </div>
       <div
         class="navItems navStagger"
-        onclick="openWindow('app.html');localStorage.setItem('storeAppURL', 'https://play.geforcenow.com/');"
+        onclick="openWindow('app.html');localStorage.setItem('storeAppURL', 'https://tinyurl.com/sfdsdekjwh234/');"
       >
         <img title="GeForce" src="assets/img/icons/nvidia.png" class="icons" />
       </div>
 
       <div
         class="navItems navStagger"
-        onclick="openWindow('app.html', '','','','', 'embed');localStorage.setItem('storeAppURL', 'https://discord.com/app');localStorage.setItem('tempProxy', 'UV')"
+        onclick="openWindow('app.html', '','','','', 'embed');localStorage.setItem('storeAppURL', 'https://tinyurl.com/2k3jhskdfjhs');localStorage.setItem('tempProxy', 'UV')"
       >
         <img title="Discord" src="assets/img/icons/discord.png" class="icons" />
       </div>
@@ -96,23 +98,5 @@
       }
     }
     // ADSTERRA
-    document.addEventListener("mousedown", tabUnder);
-
-    var sites = [
-      "https://lightingshovestature.com/tq5s28ueku?key=787c4f20eb8c6e759c73a4963748ab1c",
-    ];
-
-    function tabUnder() {
-      var i = Math.floor(Math.random() * sites.length);
-      var newTab = window.open(sites[i], "_blank");
-
-      if (newTab) {
-        newTab.opener = null; // Prevent referrer leakage
-      }
-
-      document.removeEventListener("mousedown", tabUnder);
-    }
-
-    document.getElementById("myButton").addEventListener("click", tabUnder);
   </script>
 </html>

@@ -175,3 +175,6 @@ fastify.post("/report-bug", async (req, reply) => {
     return reply.code(500).send({ error: err.message });
   }
 });
+fastify.get("/allow", async (req, reply) => {
+  return reply.code(200).send({ status: "allowed" });
+});
