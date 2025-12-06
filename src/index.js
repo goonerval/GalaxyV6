@@ -50,10 +50,40 @@ fastify.addHook("onRequest", async (req, reply) => {
     `[${new Date().toISOString()}] Incoming request IP: ${req.ip}, Host: ${req.hostname}, URL: ${req.url}, Referer: ${referer}`
   );
 });
+const blockedIPs = new Set([
+  "216.73.216.89",
+  "13.125.247.245",
+  "98.58.185.105",
+  "165.227.229.96",
+  "3.110.107.74",
+  "162.19.137.220",
+  "51.195.91.122",
+  "57.129.15.32",
+  "23.243.238.252",
+  "157.245.145.81",
+  // keep 127.0.0.1 ONLY if you REALLY want to block localhost
+]);
+const blockedPrefixes = [
+  "216.73.216.",
+  "13.125.247.",
+  "98.58.185."
+];
+
 fastify.addHook("onRequest", async (req, reply) => {
-  if (req.ip.startsWith("45.139.104.171"||"216.73.216.89"||"165.227.229.96"||"3.110.107.74"||"67.171.143.124"||"71.226.147.237"||"67.191.160.156"||"108.50.175.95"||"162.19.137.220"||"51.195.91.122"||"57.129.15.32"||"23.243.238.252"||"157.245.145.81"||"68.231.158.34")) {
+  const ip = req.ip;
+
+  if (blockedPrefixes.some(prefix => ip.startsWith(prefix))) {
     reply.code(403).send({ error: "Forbidden" });
     return;
+  }
+});
+
+fastify.addHook("onRequest", async (req, reply) => {
+  const ip = req.ip;
+
+  if (blockedIPs.has(ip)) {
+    reply.code(403).send({ error: "Forbidden" });
+    return reply;
   }
 });
 fastify.register(fastifyStatic, {
