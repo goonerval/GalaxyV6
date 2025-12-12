@@ -99,14 +99,13 @@ function openWindow(
       spawnOffset = 0;
     }
     windowPosition = windowPosition;
-  } 
-  console.log(windowPosition)
-   if (windowPosition == "left") {
+  } else if (windowPosition == "left") {
     windowEl.style.left = windowLeft || "19%";
-  } else if (windowPosition == "right"){
+    windowEl.style.top = windowTop || "19%";
+  } else if (windowPosition == "right") {
     windowEl.style.right = windowLeft || "19%";
+    windowEl.style.top = windowTop || "19%";
   }
-  windowEl.style.top = windowTop || "19%";
 
   windowEl.innerHTML = `
     <div class="windowTop">
