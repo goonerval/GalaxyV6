@@ -58,6 +58,7 @@ h1 {
   flex-wrap: wrap;
   width: 100%;
   gap: 30px;
+  transform: scale(0.96);
 }
 .block {
   background: var(--glassmorphismBlocks);
@@ -70,7 +71,6 @@ h1 {
   flex-grow: 1;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
 }
-
 .blockTitle {
   margin: 0;
   font-size: 26px;
