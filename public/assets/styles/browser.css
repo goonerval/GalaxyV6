@@ -147,17 +147,18 @@ body {
 .search-container {
   display: flex;
   align-items: center;
-  background-color: rgb(24, 24, 24);
   border-radius: 16px;
   padding: 0px 5px;
   height: 33px;
   transition-duration: 0.2s;
   flex-grow: 1;
   margin: 0px 5px;
+  background-color: rgb(24, 24, 24);
+  border: 1px solid #ffffff1a;
 }
 
 .search-container:hover {
-  background: #3a3a3a;
+  background-color: #3a3a3a;
 }
 .search {
   background: transparent;
@@ -254,6 +255,7 @@ body {
   display: flex;
 }
 .submenuItem {
+  z-index: 200;
   color: #ccc;
   font-family: fabrica;
   padding: 4px 8px;
@@ -262,14 +264,14 @@ body {
 }
 .submenuItem:hover {
   background-color: #444;
-} /* Overlay to catch clicks */
+}
 #overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  z-index: 50; /* below menu but above iframe */
+  height: 100vh;
+  z-index: 500;
   display: none;
   background-color: transparent;
   cursor: default;
@@ -288,7 +290,8 @@ body {
 .notice,
 .windowcontrolicon,
 .search,
-.tab {
+.tab,
+.toolbar {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -300,13 +303,14 @@ body {
 .bookmarks {
   height: 20px;
   width: 100%;
-  border-bottom: 2px solid #3f3f3f;
+  border-bottom: 2px solid #ffffff1a;
   display: flex;
   align-items: center;
   flex-direction: row;
   gap: 10px;
   padding: 5px 10px;
   background-color: #252525;
+  z-index: -1;
 }
 .bookmarklets {
   align-items: center;

@@ -9,7 +9,6 @@ import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import dotenv from "dotenv";
 import fs from "fs";
-import { Mittens, generateConfig } from "@scaratech/mittens";
 
 dotenv.config();
 
